@@ -74,6 +74,7 @@ export function ProductDetail({ product, onBack, onCheckout }: ProductDetailProp
   // productVariants.ts snapshot — see the "Variant not linked to Shopify"
   // root-cause note in the fetch effect below.
   const [liveVariantsFallback, setLiveVariantsFallback] = useState<ProductVariant[]>([]);
+  const [shopifyFetchError, setShopifyFetchError] = useState(false);
   const [variantsLoaded, setVariantsLoaded] = useState(false);
   const [stockWarning, setStockWarning] = useState<{ requested: number; available: number; intent: 'cart' | 'checkout' } | null>(null);
 
@@ -92,8 +93,15 @@ export function ProductDetail({ product, onBack, onCheckout }: ProductDetailProp
   // both go stale independently of each other, so both need a live
   // override, not just availability.
   useEffect(() => {
+    let cancelled = false;
+    setVariantsLoaded(false);
+    setShopifyFetchError(false);
+    setLiveVariantsFallback([]);
+    setShopifyPrices({});
+    setShopifyCompareAtPrices({});
     fetchProductByHandle(product.handle).then(sp => {
-      if (!sp) { setVariantsLoaded(true); return; }
+      if (cancelled) return;
+      if (!sp) { setShopifyFetchError(true); setVariantsLoaded(true); return; }
       const idMap: Record<string, string> = {};
       const availMap: Record<string, boolean> = {};
       const qtyMap: Record<string, number | null> = {};
@@ -109,8 +117,11 @@ export function ProductDetail({ product, onBack, onCheckout }: ProductDetailProp
       // "Variant not linked to Shopify" bug. selectedOptions was already
       // being fetched here and simply unused until now.
       const fallbackVariants: ProductVariant[] = [];
+      const curatedVariants = getVariants(product.handle);
       sp.variants.edges.forEach(({ node }) => {
-        const key = skuKey(node.sku);
+        // Some Shopify variants have no SKU. Use their GID as a unique
+        // lookup key so two blank SKUs cannot overwrite each other.
+        const key = skuKey(node.sku || node.id);
         idMap[key] = node.id;
         availMap[key] = node.availableForSale;
         qtyMap[key] = node.quantityAvailable ?? null;
@@ -124,8 +135,8 @@ export function ProductDetail({ product, onBack, onCheckout }: ProductDetailProp
           option2Name: opt2?.name,
           option2Value: opt2?.value,
           price: parseFloat(node.price.amount),
-          image: node.image?.url,
-          sku: node.sku,
+          image: node.image?.url ?? curatedVariants.find(v => v.sku && v.sku === node.sku)?.image,
+          sku: node.sku || node.id,
         });
       });
       // Single-variant products (no colour/size choices) are often absent
@@ -151,7 +162,10 @@ export function ProductDetail({ product, onBack, onCheckout }: ProductDetailProp
       setShopifyCompareAtPrices(compareAtMap);
       setLiveVariantsFallback(fallbackVariants);
       setVariantsLoaded(true);
-    }).catch(() => setVariantsLoaded(true));
+    }).catch(() => {
+      if (!cancelled) { setShopifyFetchError(true); setVariantsLoaded(true); }
+    });
+    return () => { cancelled = true; };
   }, [product.handle]);
 
   // Static productVariants.ts is preferred when it has an entry (it carries
@@ -161,17 +175,15 @@ export function ProductDetail({ product, onBack, onCheckout }: ProductDetailProp
   // silently rendering no option selector. See the fetch effect above for
   // why this fallback exists.
   const staticVariants = getVariants(product.handle);
-  const variants = staticVariants.length > 0 ? staticVariants : liveVariantsFallback;
+  const variants = liveVariantsFallback.length > 0 ? liveVariantsFallback : staticVariants;
 
   // Default to the first listed variant option so the price shown reflects
   // an actual variant right away, instead of falling back to the base
   // product.price until the customer manually picks one.
   useEffect(() => {
-    if (variants.length > 0 && selectedOption1 === null) {
+    if (variants.length > 0 && (!selectedOption1 || !variants.some(v => v.option1Value === selectedOption1 && (!selectedOption2 || v.option2Value === selectedOption2)))) {
       setSelectedOption1(variants[0].option1Value);
-      if (variants[0].option2Value) {
-        setSelectedOption2(variants[0].option2Value);
-      }
+      setSelectedOption2(variants[0].option2Value ?? null);
     }
   }, [variants]);
 
@@ -218,7 +230,8 @@ export function ProductDetail({ product, onBack, onCheckout }: ProductDetailProp
   // (the base product's default variant, ignoring whichever variant the
   // customer actually has selected), which had the same staleness problem
   // as activePrice did.
-  const effectiveComparePrice = liveCompareAtPrice ?? product.comparePrice;
+  const effectiveComparePrice = Object.prototype.hasOwnProperty.call(shopifyCompareAtPrices, liveVariantKey)
+    ? liveCompareAtPrice : product.comparePrice;
   const hasDiscount = Boolean(effectiveComparePrice && effectiveComparePrice > activePrice);
   const discountPct = hasDiscount
     ? Math.round(((effectiveComparePrice! - activePrice) / effectiveComparePrice!) * 100)
@@ -332,6 +345,7 @@ export function ProductDetail({ product, onBack, onCheckout }: ProductDetailProp
   }
 
   function handleAddToCart() {
+    if (!variantsLoaded || shopifyFetchError || !shopifyVariants[skuKey(selectedVariant?.sku)] && !shopifyVariants['default']) return;
     const error = getMissingOptionsMessage();
     if (error) {
       setValidationError(error);
@@ -368,6 +382,7 @@ export function ProductDetail({ product, onBack, onCheckout }: ProductDetailProp
   }
 
   function handleBuyNow() {
+    if (!variantsLoaded || shopifyFetchError || !shopifyVariants[skuKey(selectedVariant?.sku)] && !shopifyVariants['default']) return;
     const error = getMissingOptionsMessage();
     if (error) {
       setValidationError(error);
@@ -632,7 +647,9 @@ export function ProductDetail({ product, onBack, onCheckout }: ProductDetailProp
               <span className="text-xs text-neutral-400">(24 reviews)</span>
             </div>
 
-            {showFlashPrice ? (
+            {!variantsLoaded || shopifyFetchError ? (
+              <p className="mb-2 text-sm text-neutral-600">{shopifyFetchError ? 'Price unavailable. Please refresh the page.' : 'Loading current price…'}</p>
+            ) : showFlashPrice ? (
               <div className="mb-1">
                 <div className="mb-1.5">
                   <span className="text-[10px] font-bold text-white bg-gradient-to-r from-orange-500 to-pink-500 px-2 py-0.5 rounded-full uppercase tracking-wide animate-pulse">
@@ -858,6 +875,10 @@ export function ProductDetail({ product, onBack, onCheckout }: ProductDetailProp
               {(!product.availableForSale || (selectedOption1 !== null && !selectedVariantAvailable)) ? (
                 <div className="w-full bg-neutral-100 text-neutral-400 font-bold py-4 rounded-xl flex items-center justify-center text-sm uppercase tracking-wide">
                   Sold Out
+                </div>
+              ) : !variantsLoaded || shopifyFetchError ? (
+                <div className="w-full bg-neutral-100 text-neutral-500 py-4 rounded-xl text-center text-sm">
+                  {shopifyFetchError ? 'Unable to load current product details. Please refresh.' : 'Loading product details…'}
                 </div>
               ) : (
                 <>
