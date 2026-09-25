@@ -91,7 +91,7 @@ export async function fetchAllProducts(): Promise<ShopifyProduct[]> {
 
   while (hasNextPage) {
     const query = `
-      query GetProducts($cursor: String) {
+      query GetProducts($cursor: String) @inContext(country: MY) {
         products(first: 250, after: $cursor) {
           edges {
             node {
@@ -132,7 +132,7 @@ export async function fetchAllProducts(): Promise<ShopifyProduct[]> {
 
 export async function fetchProductByHandle(handle: string): Promise<ShopifyProduct | null> {
   const query = `
-    query GetProduct($handle: String!) {
+    query GetProduct($handle: String!) @inContext(country: MY) {
       product(handle: $handle) {
         id handle title vendor productType descriptionHtml
         images(first: 10) { edges { node { url altText } } }
@@ -209,7 +209,10 @@ export async function createCart(discountCodes?: string[], customerAccessToken?:
       // order is associated with their Shopify account — this is what makes
       // it show up under "My Orders" with real status, and lets Shopify
       // checkout pre-fill their saved address.
-      buyerIdentity: customerAccessToken ? { customerAccessToken } : null,
+      buyerIdentity: {
+        countryCode: 'MY',
+        ...(customerAccessToken ? { customerAccessToken } : {}),
+      },
     }
   );
   return data.cartCreate.cart;
