@@ -21,7 +21,18 @@ function logoDevUrl(domain: string): string {
 // Add a line here once you've downloaded their logo and re-uploaded it to
 // your own Shopify CDN; until then it falls back to the product photo.
 const BRAND_LOGO_OVERRIDES: Record<string, string> = {
-  Edizard: 'https://images-oss.2cshop.com/upload/customer_12995/upload/20250124/11cceb81ec64c930a4173d89c71d9621.png?p=image,q=100,f=auto',
+  Sennheiser: '/brand-logos/sennheiser.png',
+  Skullcandy: '/brand-logos/skullcandy.png',
+  'Turtle Beach': '/brand-logos/turtle-beach.png',
+  Therabody: '/brand-logos/therabody.png',
+  Matador: '/brand-logos/matador.jpeg',
+  SWITCHBOT: '/brand-logos/switchbot.png',
+  Satechi: '/brand-logos/satechi.png',
+  Arzopa: '/brand-logos/arzopa.png',
+  Cleer: '/brand-logos/cleer.svg',
+  BUTTONS: '/brand-logos/buttons.png',
+  Kandao: '/brand-logos/kandao.jpeg',
+  Looki: '/brand-logos/looki.png',
 };
 
 // Confidence notes: most of these are the obvious .com for the brand, but a
@@ -138,31 +149,38 @@ const brandMeta: Record<string, { description: string }> = {
   LOONA:             { description: 'AI pet companion robots' },
   Looki:             { description: "OSTSOME's in-house robotics brand" },
   Cleer:             { description: 'Open-ear wireless audio' },
+  Therabody:         { description: 'Wellness & recovery technology' },
+  Matador:           { description: 'Performance travel equipment' },
+  Satechi:           { description: 'Premium tech & desk accessories' },
   'Mobile Pixels':   { description: 'Portable dual screens' },
   Enabot:            { description: 'Home companion robots' },
   LARQ:              { description: 'Self-cleaning water bottles' },
   Dometic:           { description: 'Portable cooling & outdoor gear' },
 };
 
-// Only these brands should appear on the Our Brands page.
-// Matches are case/spacing-insensitive against the `vendor` field in products.ts.
-// Note: a few requested brands have no matching vendor in the current product
-// data (CKMOVA, BLUETTI, MATADOR) and are simply absent until products for them
-// exist. Looki L1 and the SwitchBot Lock Adapter were previously mistagged under
-// vendor "OSTSOME" — their vendor fields are now corrected to "Looki" / "SWITCHBOT".
+// Only these 12 brands should appear on the Our Brands page.
+// Order follows the requested brand order. Matching is case/spacing-insensitive
+// against the live Shopify `vendor` field.
 const ALLOWED_BRANDS = [
-  'SKULLCANDY', 'BUTTONS', 'SENNHEISER', 'CLEER', 'OBSBOT', 'LOOKI', 'KANDAO',
-  'HOHEM', 'POLAROID', 'KOSPET', 'SPCONNECT', 'DOMETIC', 'JACKERY', 'ARZOPA',
-  'EDIZARD', 'TURTLEBEACH', 'SWITCHBOT', 'ENABOT', 'LOONA', 'LARQ',
+  'SENNHEISER', 'SKULLCANDY', 'TURTLEBEACH', 'THERABODY', 'MATADOR', 'SWITCHBOT',
+  'SATECHI', 'ARZOPA', 'CLEER', 'BUTTONS', 'KANDAO', 'LOOKI',
 ];
 const normalize = (s: string) => s.toUpperCase().replace(/[^A-Z0-9]/g, '');
 
+function findByNormalizedKey<T>(record: Record<string, T>, vendor: string): T | undefined {
+  const wanted = normalize(vendor);
+  const key = Object.keys(record).find(k => normalize(k) === wanted);
+  return key ? record[key] : undefined;
+}
+
 function getBrandImage(vendor: string): string {
-  // Priority: manual override (known-good) -> logo.dev domain -> product photo
-  if (BRAND_LOGO_OVERRIDES[vendor]) return BRAND_LOGO_OVERRIDES[vendor];
-  const domain = BRAND_DOMAINS[vendor];
+  // Priority: uploaded local logo -> logo.dev domain -> product photo.
+  // Normalized matching makes SwitchBot/SWITCHBOT and other casing variants work.
+  const localLogo = findByNormalizedKey(BRAND_LOGO_OVERRIDES, vendor);
+  if (localLogo) return localLogo;
+  const domain = findByNormalizedKey(BRAND_DOMAINS, vendor);
   if (domain) return logoDevUrl(domain);
-  return BRAND_PRODUCT_IMAGES[vendor] || '';
+  return findByNormalizedKey(BRAND_PRODUCT_IMAGES, vendor) || '';
 }
 
 type BrandsPageProps = {
@@ -193,7 +211,10 @@ export function BrandsPage({ onSelectBrand }: BrandsPageProps) {
       }
     }
   }
-  const brands = [...brandGroups.values()].sort((a, b) => a.display.localeCompare(b.display));
+  const brandOrder = new Map(ALLOWED_BRANDS.map((brand, index) => [normalize(brand), index]));
+  const brands = [...brandGroups.entries()]
+    .sort(([keyA], [keyB]) => (brandOrder.get(keyA) ?? 999) - (brandOrder.get(keyB) ?? 999))
+    .map(([, value]) => value);
 
   return (
     <section className="py-10 md:py-14 bg-white min-h-screen">
@@ -214,10 +235,10 @@ export function BrandsPage({ onSelectBrand }: BrandsPageProps) {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {brands.map(({ display: brand, count }) => {
-              const meta = brandMeta[brand];
+              const meta = findByNormalizedKey(brandMeta, brand);
               const imgSrc = getBrandImage(brand);
-              const hasVectorLogo = !!BRAND_LOGO_OVERRIDES[brand] || !!BRAND_DOMAINS[brand];
-              const productPhotoFallback = BRAND_PRODUCT_IMAGES[brand];
+              const hasVectorLogo = !!findByNormalizedKey(BRAND_LOGO_OVERRIDES, brand) || !!findByNormalizedKey(BRAND_DOMAINS, brand);
+              const productPhotoFallback = findByNormalizedKey(BRAND_PRODUCT_IMAGES, brand);
 
               return (
                 <button
