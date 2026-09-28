@@ -27,10 +27,11 @@ function mapCategory(productType: string): string {
 function mapNavCategory(vendor: string, productType: string): string {
   const v = vendor.toLowerCase();
   const t = productType.toLowerCase();
+  if (v.includes('therabody')) return 'Health and Beauty';
   if (t.includes('gaming') || t.includes('controller') || v.includes('turtle beach') || v.includes('roccat') || v.includes('skullcandy') && t.includes('gaming')) return 'Gaming';
   if (t.includes('audio') || t.includes('headphone') || t.includes('earphone') || t.includes('speaker') || t.includes('earbud') || v.includes('sennheiser') || v.includes('skullcandy')) return 'Mobile Audio';
   if (t.includes('camera') || t.includes('gimbal') || t.includes('stabilizer') || v.includes('hohem') || v.includes('insta360') || v.includes('obsbot') || v.includes('kandao')) return 'Mobile Creator';
-  if (t.includes('watch') || t.includes('fitness') || t.includes('wellness') || v.includes('kospet')) return 'Wellness';
+  if (t.includes('watch') || t.includes('fitness') || t.includes('wellness') || v.includes('kospet')) return 'Health and Beauty';
   if (t.includes('travel') || t.includes('carry') || t.includes('mount') || t.includes('backpack') || t.includes('duffle') || t.includes('bag') || v.includes('matador') || v.includes('peak design') || v.includes('sp connect')) return 'Travel & Carry';
   if (t.includes('desk') || t.includes('monitor') || t.includes('keyboard') || v.includes('arzopa')) return 'Desk Setup';
   if (v.includes('switchbot') || t.includes('smart home') || t.includes('smart life')) return 'Smart Life';
