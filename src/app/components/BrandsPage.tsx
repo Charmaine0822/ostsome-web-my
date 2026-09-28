@@ -247,12 +247,12 @@ export function BrandsPage({ onSelectBrand }: BrandsPageProps) {
                   className="group flex flex-col items-center text-center p-5 border border-neutral-100 rounded-2xl hover:border-[#F16C10] hover:shadow-lg transition-all bg-white"
                 >
                   {/* Logo / product image area */}
-                  <div className="w-20 h-20 rounded-xl overflow-hidden mb-3 flex items-center justify-center bg-neutral-50 group-hover:bg-neutral-100 transition-colors">
+                  <div className="w-28 h-28 sm:w-32 sm:h-32 lg:w-40 lg:h-40 rounded-xl overflow-hidden mb-4 flex items-center justify-center bg-neutral-50 group-hover:bg-neutral-100 transition-colors">
                     {imgSrc ? (
                       <img
                         src={imgSrc}
                         alt={brand}
-                        className={`transition-transform duration-300 group-hover:scale-105 ${hasVectorLogo ? 'w-full h-full object-contain p-3' : 'w-full h-full object-cover'}`}
+                        className={`transition-transform duration-300 group-hover:scale-105 ${hasVectorLogo ? 'w-full h-full object-contain p-2 sm:p-3' : 'w-full h-full object-cover'}`}
                         onError={e => {
                           const target = e.currentTarget;
                           // First failure: if there's a product-photo fallback we haven't
@@ -267,12 +267,12 @@ export function BrandsPage({ onSelectBrand }: BrandsPageProps) {
                           target.style.display = 'none';
                           const parent = target.parentElement;
                           if (parent) {
-                            parent.innerHTML = `<span class="text-2xl font-bold text-neutral-400 group-hover:text-[#F16C10]">${brand.charAt(0)}</span>`;
+                            parent.innerHTML = `<span class="text-4xl font-bold text-neutral-400 group-hover:text-[#F16C10]">${brand.charAt(0)}</span>`;
                           }
                         }}
                       />
                     ) : (
-                      <span className="text-2xl font-bold text-neutral-400 group-hover:text-[#F16C10] transition-colors">
+                      <span className="text-4xl font-bold text-neutral-400 group-hover:text-[#F16C10] transition-colors">
                         {brand.charAt(0)}
                       </span>
                     )}
