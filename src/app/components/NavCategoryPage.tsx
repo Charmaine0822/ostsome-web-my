@@ -8,7 +8,7 @@ const categoryMeta: Record<string, { description: string; emoji: string }> = {
   'Mobile Audio':   { description: 'Earbuds and headphones for music, calls and everything in between.', emoji: '🎧' },
   'Gaming':         { description: 'Controllers, keyboards and monitors built for serious players.', emoji: '🎮' },
   'Smart Life':     { description: 'Smartwatches and smart home devices that make life easier.', emoji: '⌚' },
-  'Wellness':       { description: 'Fitness trackers and health wearables to keep you at your best.', emoji: '💪' },
+  'Health and Beauty':       { description: 'Health, beauty and recovery products to help you feel your best.', emoji: '💪' },
   'Travel & Carry': { description: 'Portable power, compact monitors and action cam gear for life on the go.', emoji: '✈️' },
   'Desk Setup':     { description: 'Monitors, webcams and peripherals to level up your workspace.', emoji: '🖥️' },
 };

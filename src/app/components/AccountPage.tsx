@@ -39,7 +39,7 @@ const MOCK_SAVED = [
     vendor: 'Kospet',
     type: 'Smart Watch',
     category: 'Smart Wearables',
-    navCategory: 'Wellness',
+    navCategory: 'Health and Beauty',
     price: 298.00,
     comparePrice: 298.00,
     images: ['https://cdn.shopify.com/s/files/1/0348/4948/9034/files/TankM4.jpg?v=1780900598'],

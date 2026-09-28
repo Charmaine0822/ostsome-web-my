@@ -129,7 +129,7 @@ export function Header({ onNavToProducts, onNavToHome, onNavToBrands, onNavToCat
   };
 
   const navLinks = [
-    'Mobile Creator', 'Mobile Audio', 'Gaming', 'Smart Life', 'Wellness', 'Travel & Carry', 'Desk Setup',
+    'Mobile Creator', 'Mobile Audio', 'Gaming', 'Smart Life', 'Health and Beauty', 'Travel & Carry', 'Desk Setup',
   ];
 
   function handleSelectProduct(product: Product) {
