@@ -28,6 +28,7 @@ function mapNavCategory(vendor: string, productType: string): string {
   const v = vendor.toLowerCase();
   const t = productType.toLowerCase();
   if (v.includes('therabody')) return 'Health and Beauty';
+  if (v.includes('cleer')) return 'Mobile Audio';
   if (t.includes('gaming') || t.includes('controller') || v.includes('turtle beach') || v.includes('roccat') || v.includes('skullcandy') && t.includes('gaming')) return 'Gaming';
   if (t.includes('audio') || t.includes('headphone') || t.includes('earphone') || t.includes('speaker') || t.includes('earbud') || v.includes('sennheiser') || v.includes('skullcandy')) return 'Mobile Audio';
   if (t.includes('camera') || t.includes('gimbal') || t.includes('stabilizer') || v.includes('hohem') || v.includes('insta360') || v.includes('obsbot') || v.includes('kandao')) return 'Mobile Creator';
