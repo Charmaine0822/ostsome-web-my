@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useCallback, useEffect } from 'rea
 import type { Product } from '../data/products';
 import { createCart, addToCart, getCart } from '../data/shopify';
 import { useAuth } from './AuthContext';
-import { getFostPrice, FOST_DISCOUNT_CODE } from '../data/pricing';
+import { getFostPrice } from '../data/pricing';
 import { isFlashSaleActiveNow, getFlashPriceForItem } from '../data/flashSale';
 
 export type CartItem = {
@@ -165,25 +165,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
     setCheckoutLoading(true);
     try {
-      // Send the member code to Shopify; the displayed member price alone
-      // does not apply a discount to Shopify's hosted checkout.
+      // FOST5 is an automatic order discount, not a discount code.
+      // Shopify evaluates eligibility using the customer linked to this cart.
       let cart = await createCart(
-        isFostMember ? [FOST_DISCOUNT_CODE] : undefined,
+        undefined,
         shopifyToken ?? undefined
       );
 
       // Add all items to the cart
       for (const item of itemsWithVariants) {
         cart = await addToCart(cart.id, item.shopifyVariantId!, item.qty);
-      }
-
-      // Check after adding products, since an empty cart has no eligible lines.
-      if (isFostMember && !cart.discountCodes?.some(
-        discount => discount.code.toUpperCase() === FOST_DISCOUNT_CODE && discount.applicable
-      )) {
-        alert('Your FOST member discount could not be applied. Please contact us before checking out.');
-        setCheckoutLoading(false);
-        return;
       }
 
       // Stash this exact cart's ID so that on the next app load we can ask
