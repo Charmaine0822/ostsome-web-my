@@ -1,4 +1,4 @@
-import { Search, ShoppingCart, User, Menu, ChevronLeft, ChevronRight, X, LogOut, Crown } from 'lucide-react';
+import { Search, ShoppingCart, User, ChevronLeft, ChevronRight, X, LogOut, Crown } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
 import logoImg from '../../imports/logo_circle.png';
 import type { Product } from '../data/products';
@@ -322,9 +322,6 @@ export function Header({ onNavToProducts, onNavToHome, onNavToBrands, onNavToCat
                 )}
               </div>
 
-              <button className="md:hidden hover:text-[#F16C10] transition-colors">
-                <Menu size={24} />
-              </button>
             </div>
           </div>
         </div>
