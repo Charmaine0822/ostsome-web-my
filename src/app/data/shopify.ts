@@ -224,6 +224,7 @@ export async function addToCart(cartId: string, variantId: string, quantity: num
       cartLinesAdd(cartId: $cartId, lines: $lines) {
         cart {
           id checkoutUrl totalQuantity
+          discountCodes { code applicable }
           lines(first: 50) {
             edges {
               node {
