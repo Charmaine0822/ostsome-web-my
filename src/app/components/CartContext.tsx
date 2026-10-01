@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import type { Product } from '../data/products';
-import { createCart, addToCart, removeFromCart, updateCartLine, getCart } from '../data/shopify';
+import { createCart, addToCart, getCart } from '../data/shopify';
 import { useAuth } from './AuthContext';
-import { getFostPrice } from '../data/pricing';
+import { getFostPrice, FOST_DISCOUNT_CODE } from '../data/pricing';
 import { isFlashSaleActiveNow, getFlashPriceForItem } from '../data/flashSale';
 
 export type CartItem = {
@@ -165,27 +165,25 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
     setCheckoutLoading(true);
     try {
-      // FOST5 is now an automatic discount in Shopify Admin (scoped to the
-      // FOST Members customer segment), not a discount code — it applies on
-      // its own to any logged-in FOST member with no code needed. We
-      // deliberately do NOT pass a discount code into cart creation anymore.
-      // Standard Shopify checkout only supports one discount code slot at a
-      // time regardless of combination settings, so pre-loading a code here
-      // (even a currently-valid one) would block the customer from applying
-      // any other code — like a marketing promo — at checkout. Leaving
-      // discountCodes empty lets FOST5 apply automatically in the
-      // background while keeping that one code slot free for anything else.
-      // Passing the customer's token here links the resulting order to their
-      // Shopify account (see comment on createCart) — this is what makes
-      // "My Orders" and status tracking work for logged-in FOST members.
+      // Send the member code to Shopify; the displayed member price alone
+      // does not apply a discount to Shopify's hosted checkout.
       let cart = await createCart(
-        undefined,
+        isFostMember ? [FOST_DISCOUNT_CODE] : undefined,
         shopifyToken ?? undefined
       );
 
       // Add all items to the cart
       for (const item of itemsWithVariants) {
         cart = await addToCart(cart.id, item.shopifyVariantId!, item.qty);
+      }
+
+      // Check after adding products, since an empty cart has no eligible lines.
+      if (isFostMember && !cart.discountCodes?.some(
+        discount => discount.code.toUpperCase() === FOST_DISCOUNT_CODE && discount.applicable
+      )) {
+        alert('Your FOST member discount could not be applied. Please contact us before checking out.');
+        setCheckoutLoading(false);
+        return;
       }
 
       // Stash this exact cart's ID so that on the next app load we can ask
