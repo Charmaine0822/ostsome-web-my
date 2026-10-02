@@ -9,6 +9,7 @@ import { getFostPrice } from '../data/pricing';
 import luckyDrawImg from '../../imports/rubyoung-lucky-draw.jpg';
 import { useFlashSaleActive, getFlashPrice, FLASH_SALE_VARIANT_SCOPE } from '../data/flashSale';
 import { getCampaignDeal } from '../data/campaignDeals';
+import { trackMetaEvent } from '../lib/metaPixel';
 
 // Variant lookups are keyed by SKU, not by option display values. Option
 // values (e.g. a colour name) can drift between the static
@@ -77,6 +78,17 @@ export function ProductDetail({ product, onBack, onCheckout }: ProductDetailProp
   const [shopifyFetchError, setShopifyFetchError] = useState(false);
   const [variantsLoaded, setVariantsLoaded] = useState(false);
   const [stockWarning, setStockWarning] = useState<{ requested: number; available: number; intent: 'cart' | 'checkout' } | null>(null);
+
+  // Meta Pixel: record a product view on the custom Netlify storefront.
+  useEffect(() => {
+    trackMetaEvent('ViewContent', {
+      content_ids: [product.handle],
+      content_name: product.title,
+      content_type: 'product',
+      value: product.price,
+      currency: 'MYR',
+    });
+  }, [product.handle, product.title, product.price]);
 
   // Show lucky draw popup if arrived via QR (URL contains /products/)
   useEffect(() => {

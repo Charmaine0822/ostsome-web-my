@@ -4,6 +4,7 @@ import { createCart, addToCart, getCart } from '../data/shopify';
 import { useAuth } from './AuthContext';
 import { getFostPrice } from '../data/pricing';
 import { isFlashSaleActiveNow, getFlashPriceForItem } from '../data/flashSale';
+import { trackMetaEvent } from '../lib/metaPixel';
 
 export type CartItem = {
   product: Product;
@@ -100,6 +101,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const addItem = useCallback((incoming: Omit<CartItem, 'qty'> & { qty?: number }) => {
     const qty = incoming.qty ?? 1;
+    trackMetaEvent('AddToCart', {
+      content_ids: [incoming.product.handle],
+      content_name: incoming.product.title,
+      content_type: 'product',
+      value: incoming.variantPrice * qty,
+      currency: 'MYR',
+      num_items: qty,
+    });
     setItems(prev => {
       const existingIdx = prev.findIndex(
         i =>
@@ -162,6 +171,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       setCheckoutLoading(false);
       return;
     }
+
+    trackMetaEvent('InitiateCheckout', {
+      content_ids: itemsWithVariants.map(i => i.product.handle),
+      content_type: 'product',
+      value: itemsWithVariants.reduce((sum, i) => sum + i.variantPrice * i.qty, 0),
+      currency: 'MYR',
+      num_items: itemsWithVariants.reduce((sum, i) => sum + i.qty, 0),
+    });
 
     setCheckoutLoading(true);
     try {
