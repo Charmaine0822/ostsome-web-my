@@ -645,7 +645,7 @@ export function ProductDetail({ product, onBack, onCheckout }: ProductDetailProp
           <div className="flex flex-col">
             <div className="flex items-center gap-3 mb-3">
               <span className="text-xs font-bold text-[#F16C10] uppercase tracking-widest">{product.vendor}</span>
-              <span className="text-xs text-neutral-400 bg-neutral-100 px-2 py-0.5 rounded-full">{product.category}</span>
+              <span className="text-xs text-neutral-400 bg-neutral-100 px-2 py-0.5 rounded-full">{product.navCategory}</span>
             </div>
 
             <h1 className="text-2xl md:text-3xl font-bold text-black leading-tight mb-4">{product.title}</h1>
