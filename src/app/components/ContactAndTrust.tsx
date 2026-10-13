@@ -17,23 +17,23 @@ const MAPS_QUERY = 'Jaya One, 72A Jalan Universiti, Section 13, 46200 Petaling J
 const MAPS_EMBED_SRC = `https://www.google.com/maps?q=${encodeURIComponent(MAPS_QUERY)}&output=embed`;
 const MAPS_LINK = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(MAPS_QUERY)}`;
 
-// These don't have real pages/policies behind them yet on the site — hrefs
-// are left as "#" placeholders for now. Once each page/policy exists,
-// swap the href in here rather than hardcoding a new list elsewhere.
+// Company information opens the official corporate website.
+// Customer enquiries use the published OSTSOME Malaysia contact address.
+// Policy links are kept as contact enquiries until approved policy text is supplied.
 const footerLinkColumns = [
   {
     heading: 'About Us',
     links: [
-      { label: 'Company Info', href: '/about-us' },
-      { label: 'Feedback & Complaints', href: '/feedback' },
+      { label: 'Company Info', href: 'https://www.streamcastasia.com/', external: true },
+      { label: 'Feedback & Complaints', href: 'mailto:ost-my@streamcastasia.com?subject=Customer%20Feedback%20%26%20Complaints' },
     ],
   },
   {
     heading: 'More Info',
     links: [
-      { label: 'Warranty Policy', href: '/warranty-policy' },
-      { label: 'Return & Exchange Policy', href: '/return-policy' },
-      { label: 'Business Partnerships', href: '/partnerships' },
+      { label: 'Warranty Policy', href: 'mailto:ost-my@streamcastasia.com?subject=Warranty%20Policy%20Enquiry' },
+      { label: 'Return & Exchange Policy', href: 'mailto:ost-my@streamcastasia.com?subject=Return%20%26%20Exchange%20Policy%20Enquiry' },
+      { label: 'Business Partnerships', href: 'mailto:ost-my@streamcastasia.com?subject=Business%20Partnership%20Enquiry' },
     ],
   },
 ];
@@ -107,7 +107,7 @@ export function ContactAndTrust() {
                 <ul className="flex flex-col gap-2">
                   {col.links.map(link => (
                     <li key={link.label}>
-                      <a href={link.href} className="text-sm text-neutral-500 hover:text-[#F16C10] transition-colors">
+                      <a href={link.href} target={"external" in link && link.external ? "_blank" : undefined} rel={"external" in link && link.external ? "noopener noreferrer" : undefined} className="text-sm text-neutral-500 hover:text-[#F16C10] transition-colors">
                         {link.label}
                       </a>
                     </li>
