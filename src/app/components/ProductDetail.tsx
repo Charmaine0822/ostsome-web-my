@@ -650,15 +650,6 @@ export function ProductDetail({ product, onBack, onCheckout }: ProductDetailProp
 
             <h1 className="text-2xl md:text-3xl font-bold text-black leading-tight mb-4">{product.title}</h1>
 
-            <div className="flex items-center gap-2 mb-5">
-              <div className="flex items-center gap-0.5">
-                {[1,2,3,4,5].map((s) => (
-                  <Star key={s} size={14} className={s <= 4 ? 'text-amber-400 fill-amber-400' : 'text-neutral-200 fill-neutral-200'} />
-                ))}
-              </div>
-              <span className="text-xs text-neutral-400">(24 reviews)</span>
-            </div>
-
             {!variantsLoaded || shopifyFetchError ? (
               <p className="mb-2 text-sm text-neutral-600">{shopifyFetchError ? 'Price unavailable. Please refresh the page.' : 'Loading current price…'}</p>
             ) : showFlashPrice ? (
