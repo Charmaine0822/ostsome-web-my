@@ -1,40 +1,41 @@
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import matadorBanner from "../../imports/Matador Banner.png";
-import sennheiserBanner from "../../imports/Sennheiser Banner.png";
-import skullcandyBanner from "../../imports/Skullcandy Banner.png";
-import therabodyBanner from "../../imports/Therabody Banner.png";
-
-const banners = [therabodyBanner, matadorBanner, sennheiserBanner, skullcandyBanner];
+import type { Product } from "../data/products";
+const banners = [
+  { label: "Sennheiser", image: "/home-banners/sennheiser.png", query: "momentum true wireless 5" },
+  { label: "Therabody", image: "/home-banners/therabody.png", query: "theragun mini" },
+  { label: "Looki", image: "/home-banners/looki.png", query: "looki l1" },
+  { label: "Skullcandy", image: "/home-banners/skullcandy.png", query: "crusher 720" },
+  { label: "Matador", image: "/home-banners/matador.png", query: "globerider35" },
+  { label: "Turtle Beach", image: "/home-banners/turtle-beach.png", query: "velocityone multi-shift" },
+  { label: "Satechi", image: "/home-banners/satechi.png", query: "stand & hub with ssd enclosure" },
+  { label: "Kandao", image: "/home-banners/kandao.png", query: "meeting pro 2" },
+  { label: "Arzopa", image: "/home-banners/arzopa.png", query: "a1t" },
+  { label: "SwitchBot", image: "/home-banners/switchbot.png", query: "curtain 3 rod" },
+  { label: "Buttons", image: "/home-banners/buttons.png", query: "buttons clip" },
+  { label: "Cleer", image: "/home-banners/cleer.png", query: "arc iii sport" }
+];
 
 type HeroProps = {
-  onNavToAllProducts: () => void;
-  onNavToHeshAnc: () => void;
-  onNavToFostSignup: () => void;
-  onNavToClearance: () => void;
-  onNavToLooki: () => void;
+  products: Product[];
+  onSelectProduct: (product: Product) => void;
 };
 
-export function Hero({
-  onNavToAllProducts,
-}: HeroProps) {
+export function Hero({ products, onSelectProduct }: HeroProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // TODO: swap these once brand landing pages / collection links are decided.
-  // All 4 banners currently point at All Products as a placeholder.
-  const bannerActions = [
-    onNavToAllProducts,
-    onNavToAllProducts,
-    onNavToAllProducts,
-    onNavToAllProducts,
-  ];
-  const bannerLabels = [
-    "Therabody",
-    "Matador",
-    "Sennheiser",
-    "Skullcandy",
-  ];
+  const openProduct = (query: string) => {
+    const normalize = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+    const target = normalize(query);
+    const product = products.find(p => normalize(p.title).includes(target) || normalize(p.handle || "").includes(target));
+    if (product) {
+      onSelectProduct(product);
+    } else {
+      // If the live catalog does not contain this product, use the site's product search.
+      window.location.assign(`/search?q=${encodeURIComponent(query)}`);
+    }
+  };
 
   const goToSlide = (index: number) => setCurrentSlide(index);
   const goToPrevious = () =>
@@ -42,11 +43,11 @@ export function Hero({
   const goToNext = () =>
     setCurrentSlide((prev) => (prev + 1) % banners.length);
 
-  // Auto-cycle every 8 seconds
+  // Auto-cycle every 4 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % banners.length);
-    }, 8000);
+    }, 4000);
     return () => clearInterval(timer);
   }, []);
 
@@ -63,13 +64,13 @@ export function Hero({
             }`}
           >
             <button
-              onClick={bannerActions[index]}
+              onClick={() => openProduct(banner.query)}
               className="block w-full h-full cursor-pointer relative"
-              aria-label={`Go to ${bannerLabels[index]}`}
+              aria-label={`View ${banner.label} product`}
             >
               <ImageWithFallback
-                src={banner}
-                alt={`Hero banner ${index + 1}`}
+                src={banner.image}
+                alt={`${banner.label} product banner`}
                 className="w-full h-full object-cover object-center"
               />
             </button>
