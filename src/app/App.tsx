@@ -352,11 +352,8 @@ function AppInner() {
       {page === 'home' && (
         <>
           <Hero
-            onNavToAllProducts={handleNavToProducts}
-            onNavToHeshAnc={() => { if (heshAncProduct) handleSelectProduct(heshAncProduct); }}
-            onNavToFostSignup={() => setAuthModal({ open: true, view: 'signup' })}
-            onNavToClearance={() => goTo({ page: 'one-season-off' })}
-            onNavToLooki={() => { if (lookiProduct) handleSelectProduct(lookiProduct); }}
+            products={liveProducts}
+            onSelectProduct={handleSelectProduct}
           />
           <FridayFlashDeals
             products={flashDealProducts}
