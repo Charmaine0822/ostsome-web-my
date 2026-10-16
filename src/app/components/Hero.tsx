@@ -43,11 +43,11 @@ export function Hero({ products, onSelectProduct }: HeroProps) {
   const goToNext = () =>
     setCurrentSlide((prev) => (prev + 1) % banners.length);
 
-  // Auto-cycle every 4 seconds
+  // Auto-cycle every 6 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % banners.length);
-    }, 4000);
+    }, 6000);
     return () => clearInterval(timer);
   }, []);
 

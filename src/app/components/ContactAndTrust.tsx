@@ -18,14 +18,14 @@ const MAPS_EMBED_SRC = `https://www.google.com/maps?q=${encodeURIComponent(MAPS_
 const MAPS_LINK = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(MAPS_QUERY)}`;
 
 // Company information opens the official corporate website.
-// Customer enquiries use the published OSTSOME Malaysia contact address.
+// Feedback and partnership enquiries open WhatsApp; policy enquiries use email.
 // Policy links are kept as contact enquiries until approved policy text is supplied.
 const footerLinkColumns = [
   {
     heading: 'About Us',
     links: [
       { label: 'Company Info', href: 'https://www.streamcastasia.com/', external: true },
-      { label: 'Feedback & Complaints', href: 'mailto:ost-my@streamcastasia.com?subject=Customer%20Feedback%20%26%20Complaints' },
+      { label: 'Feedback & Complaints', href: 'https://wa.me/60108870937?text=Hi%2C%20I%20would%20like%20to%20provide%20feedback%20or%20report%20an%20issue%20regarding%20my%20order.' },
     ],
   },
   {
@@ -33,7 +33,7 @@ const footerLinkColumns = [
     links: [
       { label: 'Warranty Policy', href: 'mailto:ost-my@streamcastasia.com?subject=Warranty%20Policy%20Enquiry' },
       { label: 'Return & Exchange Policy', href: 'mailto:ost-my@streamcastasia.com?subject=Return%20%26%20Exchange%20Policy%20Enquiry' },
-      { label: 'Business Partnerships', href: 'mailto:ost-my@streamcastasia.com?subject=Business%20Partnership%20Enquiry' },
+      { label: 'Business Partnerships', href: 'https://wa.me/60108870937?text=Hi%2C%20I%27m%20interested%20in%20exploring%20a%20business%20partnership%20with%20Ostsome%20Malaysia.' },
     ],
   },
 ];
@@ -107,7 +107,7 @@ export function ContactAndTrust() {
                 <ul className="flex flex-col gap-2">
                   {col.links.map(link => (
                     <li key={link.label}>
-                      <a href={link.href} target={"external" in link && link.external ? "_blank" : undefined} rel={"external" in link && link.external ? "noopener noreferrer" : undefined} className="text-sm text-neutral-500 hover:text-[#F16C10] transition-colors">
+                      <a href={link.href} target={link.href.startsWith("https://wa.me/") || ("external" in link && link.external) ? "_blank" : undefined} rel={link.href.startsWith("https://wa.me/") || ("external" in link && link.external) ? "noopener noreferrer" : undefined} className="text-sm text-neutral-500 hover:text-[#F16C10] transition-colors">
                         {link.label}
                       </a>
                     </li>
