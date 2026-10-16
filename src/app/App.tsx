@@ -12,6 +12,7 @@ import { DiscoveryByLifestyle } from './components/DiscoveryByLifestyle';
 import { WhyEnthusiasts } from './components/WhyEnthusiasts';
 import { OurStory } from './components/OurStory';
 import { ContactAndTrust } from './components/ContactAndTrust';
+import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { FostMembership } from './components/FostMembership';
 import { FostMembershipPage } from './components/FostMembershipPage';
 import { ProductListing } from './components/ProductListing';
@@ -327,6 +328,7 @@ function AppInner() {
       )}
 
       <CartDrawer />
+      {showHeader && <FloatingWhatsApp />}
 
       {showHeader && (
         <Header
