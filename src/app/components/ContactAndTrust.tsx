@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+import { X } from 'lucide-react';
 import { Truck, CreditCard, ShieldCheck, MapPin, Phone, Mail, Calendar, ExternalLink } from 'lucide-react';
 
 const trustBadges = [
@@ -17,9 +19,6 @@ const MAPS_QUERY = 'Jaya One, 72A Jalan Universiti, Section 13, 46200 Petaling J
 const MAPS_EMBED_SRC = `https://www.google.com/maps?q=${encodeURIComponent(MAPS_QUERY)}&output=embed`;
 const MAPS_LINK = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(MAPS_QUERY)}`;
 
-// Company information opens the official corporate website.
-// Feedback and partnership enquiries open WhatsApp; policy enquiries use email.
-// Policy links are kept as contact enquiries until approved policy text is supplied.
 const footerLinkColumns = [
   {
     heading: 'About Us',
@@ -31,14 +30,23 @@ const footerLinkColumns = [
   {
     heading: 'More Info',
     links: [
-      { label: 'Warranty Policy', href: 'mailto:ost-my@streamcastasia.com?subject=Warranty%20Policy%20Enquiry' },
-      { label: 'Return & Exchange Policy', href: 'mailto:ost-my@streamcastasia.com?subject=Return%20%26%20Exchange%20Policy%20Enquiry' },
+      { label: 'Warranty Policy', modal: 'warranty' },
+      { label: 'Return & Exchange Policy', modal: 'returns' },
       { label: 'Business Partnerships', href: 'https://wa.me/60108870937?text=Hi%2C%20I%27m%20interested%20in%20exploring%20a%20business%20partnership%20with%20Ostsome%20Malaysia.' },
     ],
   },
 ];
 
 export function ContactAndTrust() {
+  const [activePolicy, setActivePolicy] = useState<'warranty' | 'returns' | null>(null);
+  useEffect(() => {
+    if (!activePolicy) return;
+    const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') setActivePolicy(null); };
+    window.addEventListener('keydown', onKey);
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = previous; };
+  }, [activePolicy]);
   return (
     <section className="py-10 md:py-14 bg-white">
       <div className="max-w-7xl mx-auto px-4">
@@ -107,9 +115,11 @@ export function ContactAndTrust() {
                 <ul className="flex flex-col gap-2">
                   {col.links.map(link => (
                     <li key={link.label}>
-                      <a href={link.href} target={link.href.startsWith("https://wa.me/") || ("external" in link && link.external) ? "_blank" : undefined} rel={link.href.startsWith("https://wa.me/") || ("external" in link && link.external) ? "noopener noreferrer" : undefined} className="text-sm text-neutral-500 hover:text-[#F16C10] transition-colors">
-                        {link.label}
-                      </a>
+                      {'modal' in link && link.modal ? (
+                        <button type="button" onClick={() => setActivePolicy(link.modal as 'warranty' | 'returns')} className="text-left text-sm text-neutral-500 hover:text-[#F16C10] transition-colors">{link.label}</button>
+                      ) : (
+                        <a href={'href' in link ? link.href : '#'} target={'href' in link && (link.href.startsWith('https://wa.me/') || ('external' in link && link.external)) ? '_blank' : undefined} rel="noopener noreferrer" className="text-sm text-neutral-500 hover:text-[#F16C10] transition-colors">{link.label}</a>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -118,6 +128,34 @@ export function ContactAndTrust() {
           </div>
         </div>
       </div>
+      {activePolicy && (
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/55 p-4" onMouseDown={(e) => { if (e.target === e.currentTarget) setActivePolicy(null); }}>
+          <div role="dialog" aria-modal="true" aria-labelledby="policy-title" className="relative w-full max-w-xl max-h-[85vh] overflow-y-auto rounded-2xl bg-white p-6 sm:p-8 shadow-2xl text-neutral-800">
+            <button type="button" onClick={() => setActivePolicy(null)} aria-label="Close policy" className="absolute right-4 top-4 rounded-full p-2 hover:bg-neutral-100"><X size={22}/></button>
+            {activePolicy === 'warranty' ? (
+              <div className="space-y-4 text-sm leading-relaxed pr-2">
+                <h2 id="policy-title" className="text-xl font-bold text-black pr-10">Warranty Policy</h2>
+                <p>All products come with a <strong>1-year warranty</strong>, except <strong>Satechi products, which come with a 2-year warranty</strong>.</p>
+                <p>Please <a className="font-semibold text-[#F16C10] underline" target="_blank" rel="noopener noreferrer" href="https://wa.me/60108870937?text=Hi%2C%20I%20would%20like%20to%20enquire%20about%20a%20warranty%20claim.">contact us via WhatsApp</a> before sending or bringing in an item for a warranty claim.</p>
+                <h3 className="font-bold text-black">Warranty Method (Please choose one)</h3>
+                <ol className="list-decimal pl-5 space-y-2"><li><strong>Self-delivery via courier</strong> — Shipping fees to be borne by buyer.</li><li><strong>Walk-in to our office</strong> — Monday–Friday, 9:30 AM–4:00 PM (except public holidays).</li></ol>
+                <h3 className="font-bold text-black">For Self-Delivery (Warranty Claim)</h3>
+                <p>Kindly courier the malfunctioning item to our office for a quality check / warranty claim after contacting us.</p>
+                <h3 className="font-bold text-black">Office Details</h3>
+                <p><strong>StreamCast Asia</strong><br/>No. 93-1, Block H, Jaya One,<br/>No. 72A, Jalan Universiti,<br/>Section 13, 46200 Petaling Jaya, Selangor</p>
+                <p><strong>Office Hotline:</strong> +603-7931 5927<br/><strong>Operation Hours:</strong> 9:30 AM–4:00 PM (Mon–Fri, except public holidays)</p>
+              </div>
+            ) : (
+              <div className="space-y-4 text-sm leading-relaxed pr-2">
+                <h2 id="policy-title" className="text-xl font-bold text-black pr-10">Return &amp; Refund Policy</h2>
+                <p>Only <strong>unsealed and unused products</strong> are eligible for returns and refunds, subject to applicable consumer protection laws.</p>
+                <p>Please <a className="font-semibold text-[#F16C10] underline" target="_blank" rel="noopener noreferrer" href="https://wa.me/60108870937?text=Hi%2C%20I%20would%20like%20to%20enquire%20about%20a%20return%20or%20refund.">contact us via WhatsApp</a> before arranging a return or refund.</p>
+                <p className="text-xs text-neutral-500">This policy does not affect any rights you may have under applicable consumer protection laws.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </section>
   );
 }
