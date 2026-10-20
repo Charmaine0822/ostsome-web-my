@@ -1,3 +1,8 @@
 @import './fonts.css';
 @import './tailwind.css';
 @import './theme.css';
+
+/* Keep the layout inside the mobile viewport while retaining pinch zoom. */
+html, body, #root { width: 100%; min-width: 0; }
+html, body { overflow-x: clip; }
+img, video { max-width: 100%; }
