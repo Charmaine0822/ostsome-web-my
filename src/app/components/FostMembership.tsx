@@ -2,7 +2,6 @@ import { useProducts } from '../hooks/useProducts';
 import { CRUSHER_HANDLE, MTW5_HANDLE } from '../data/homeFeatured';
 import { getFostPrice } from '../data/pricing';
 import { Crown, Tag, Zap, Users, Gift, CalendarHeart, Heart } from 'lucide-react';
-const layoutImg = '/home-featured/momentum-5.jpg';
 
 const perks = [
   { icon: Tag, title: 'Member-only pricing', description: 'Unlock exclusive prices on selected products.' },
@@ -77,80 +76,45 @@ export function FostMembership({ onJoin, onLearnMore, onLogin }: { onJoin?: () =
             </p>
           </div>
 
-          {/* RIGHT */}
-          <div className="relative" style={{ height: '720px' }}>
-
-            {/* Sennheiser photo — narrower so person shows on right side */}
-            <div className="absolute top-0 left-0 rounded-2xl overflow-hidden shadow-lg" style={{ width: '50%', zIndex: 1 }}>
-              <img
-                src={sennheiserFOST}
-                alt="Skullcandy Crusher 720"
-                className="w-full object-cover object-center"
-                style={{ height: '240px' }}
-                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-              />
-            </div>
-
-            {/* Member Pricing card — top right */}
-            <div className="absolute top-0 right-0 bg-white border border-neutral-200 rounded-2xl shadow-md p-4" style={{ width: '46%', zIndex: 2 }}>
-              <p className="text-[#F16C10] text-[9px] font-bold uppercase tracking-widest mb-2">Member Pricing</p>
-              <p className="text-black text-xs font-bold mb-3 leading-snug">Skullcandy Crusher 720 Sensory Bass Headphones</p>
-              <p className="text-neutral-400 text-[10px] mb-0.5">Public Price</p>
-              <p className="text-neutral-400 text-sm line-through mb-2">{crusher ? `RM ${crusher.price.toFixed(2)}` : 'Loading…'}</p>
-              <p className="text-[#F16C10] text-[9px] font-bold uppercase tracking-wider mb-0.5">FOST Price</p>
-              <p className="text-[#F16C10] text-2xl font-bold mb-2">{crusher ? `RM ${getFostPrice(crusher.price).toFixed(2)}` : 'Loading…'}</p>
-              <div className="bg-[#F16C10]/10 text-[#F16C10] text-[9px] font-bold px-2 py-1 rounded-full inline-block">
-                {crusher ? `You save RM ${(crusher.price - getFostPrice(crusher.price)).toFixed(2)}` : 'Member pricing'}
+          {/* Product cards flow naturally: no overlaps or cropped product photos. */}
+          <div className="grid grid-cols-2 gap-4 min-w-0">
+            <article className="col-span-2 grid grid-cols-1 sm:grid-cols-2 bg-white border border-neutral-200 rounded-2xl overflow-hidden shadow-sm">
+              <div className="aspect-[4/3] sm:aspect-auto sm:min-h-[220px] bg-white flex items-center justify-center p-8">
+                {sennheiserFOST && <img src={sennheiserFOST} alt="Skullcandy Crusher 720" className="w-full h-full max-h-[190px] object-contain" />}
               </div>
+              <div className="p-5 sm:py-7 flex flex-col justify-center items-start">
+                <p className="text-[#F16C10] text-[10px] font-bold uppercase tracking-widest mb-2">Member Pricing</p>
+                <h3 className="text-black text-sm font-bold mb-4 leading-snug">Skullcandy Crusher 720 Sensory Bass Headphones</h3>
+                <p className="text-neutral-500 text-xs mb-1">Public Price</p>
+                <p className="text-neutral-400 text-sm line-through mb-3">{crusher ? `RM ${crusher.price.toFixed(2)}` : 'Loading…'}</p>
+                <p className="text-[#F16C10] text-[10px] font-bold uppercase tracking-wider mb-1">FOST Price</p>
+                <p className="text-[#F16C10] text-2xl font-bold mb-3">{crusher ? `RM ${getFostPrice(crusher.price).toFixed(2)}` : 'Loading…'}</p>
+                {crusher && <p className="bg-[#F16C10]/10 text-[#F16C10] text-[10px] font-bold px-3 py-1.5 rounded-full">You save RM {(crusher.price - getFostPrice(crusher.price)).toFixed(2)}</p>}
+              </div>
+            </article>
+            <article className="min-w-0 grid grid-rows-[auto_1fr] bg-white border border-neutral-200 rounded-2xl overflow-hidden shadow-sm">
+              <div className="aspect-[4/3] overflow-hidden bg-neutral-50">
+                <img src={firstAccessFOST} alt="Looki L1" className="w-full h-full object-cover object-center" />
+              </div>
+              <div className="p-4 min-h-[132px]">
+                <p className="text-[#F16C10] text-[10px] font-bold uppercase tracking-wider mb-2">First Access</p>
+                <h3 className="text-black text-sm font-bold leading-snug">Looki L1</h3>
+                <p className="text-neutral-500 text-xs mt-2">Members saw it first.</p>
+              </div>
+            </article>
+            <article className="min-w-0 grid grid-rows-[auto_1fr] bg-white border border-neutral-200 rounded-2xl overflow-hidden shadow-sm">
+              <div className="aspect-[4/3] bg-white p-3 sm:p-5">
+                {newSeasonFOST && <img src={newSeasonFOST} alt="Sennheiser MOMENTUM True Wireless 5" className="w-full h-full object-contain" />}
+              </div>
+              <div className="p-4 min-h-[132px]">
+                <p className="text-[#F16C10] text-[10px] font-bold uppercase tracking-wider mb-2">New This Season</p>
+                <h3 className="text-black text-sm font-bold leading-snug">Sennheiser MOMENTUM True Wireless 5</h3>
+                <p className="text-neutral-500 text-xs mt-2">Now in the OSTSOME lineup.</p>
+              </div>
+            </article>
+            <div className="col-span-2 rounded-2xl overflow-hidden">
+              <img src="/home-featured/fost-membership.svg" alt="FOST — Friends Get More. Free to join. Member pricing, early access and exclusive events." className="block w-full h-auto" />
             </div>
-
-            {/* First Access photo */}
-            <div className="absolute rounded-2xl overflow-hidden shadow-lg" style={{ top: '210px', left: '0', width: '50%', zIndex: 3 }}>
-              <img
-                src={firstAccessFOST}
-                alt="Looki L1"
-                className="w-full object-cover"
-                style={{ height: '200px' }}
-                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-              />
-            </div>
-
-            {/* First Access card */}
-            <div className="absolute bg-white border border-neutral-200 rounded-2xl shadow-md p-3" style={{ top: '418px', left: '0', width: '48%', zIndex: 4 }}>
-              <p className="text-[#F16C10] text-[9px] font-bold uppercase tracking-wider mb-1">First Access</p>
-              <p className="text-black text-xs font-bold">Looki L1</p>
-              <p className="text-neutral-500 text-[10px]">Members saw it first.</p>
-            </div>
-
-            {/* New Season photo */}
-            <div className="absolute rounded-2xl overflow-hidden shadow-lg" style={{ top: '260px', right: '0', width: '48%', zIndex: 3 }}>
-              <img
-                src={newSeasonFOST}
-                alt="Sennheiser MOMENTUM True Wireless 5"
-                className="w-full object-cover"
-                style={{ height: '200px' }}
-                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-              />
-            </div>
-
-            {/* Product Testing card */}
-            <div className="absolute bg-white border border-neutral-200 rounded-2xl shadow-md p-3" style={{ top: '468px', right: '0', width: '48%', zIndex: 4 }}>
-              <p className="text-[#F16C10] text-[9px] font-bold uppercase tracking-wider mb-1">New This Season</p>
-              <p className="text-black text-xs font-bold">Sennheiser MOMENTUM True Wireless 5</p>
-              <p className="text-neutral-500 text-[10px]">Now in the OSTSOME lineup.</p>
-            </div>
-
-            {/* Bottom flat lay */}
-            <div className="absolute rounded-2xl overflow-hidden shadow-sm" style={{ top: '560px', left: '0', right: '0', zIndex: 2 }}>
-              <img
-                src={layoutImg}
-                alt="FOST products"
-                className="w-full object-cover object-center"
-                style={{ height: '160px' }}
-                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-              />
-            </div>
-
           </div>
         </div>
       </div>

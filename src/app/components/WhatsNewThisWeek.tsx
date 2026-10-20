@@ -89,7 +89,13 @@ export function WhatsNewThisWeek({ onShopAll, onSelectProduct }: { onShopAll?: (
                     src={imgSrc}
                     alt={product.title}
                     className="w-full h-full object-cover [image-rendering:auto] group-hover:scale-105 transition duration-500"
-                    onError={e => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80'; }}
+                    onError={e => {
+                      const img = e.currentTarget;
+                      if (!img.dataset.fallback && product.images[0]) {
+                        img.dataset.fallback = 'true';
+                        img.src = product.images[0];
+                      } else { img.style.visibility = 'hidden'; }
+                    }}
                   />
                   <div className={`absolute top-2 left-2 md:top-4 md:left-4 ${product.labelColor} text-white px-2 py-1 md:px-3 md:py-1.5 rounded-full text-[10px] md:text-xs font-bold flex items-center gap-1 md:gap-1.5`}>
                     <LabelIcon size={10} />
@@ -145,7 +151,13 @@ export function WhatsNewThisWeek({ onShopAll, onSelectProduct }: { onShopAll?: (
                       src={imgSrc}
                       alt={product.title}
                       className="w-full h-full object-cover [image-rendering:auto] group-hover:scale-105 transition duration-500"
-                      onError={e => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80'; }}
+                      onError={e => {
+                      const img = e.currentTarget;
+                      if (!img.dataset.fallback && product.images[0]) {
+                        img.dataset.fallback = 'true';
+                        img.src = product.images[0];
+                      } else { img.style.visibility = 'hidden'; }
+                    }}
                     />
                     <div className={`absolute top-2 left-2 md:top-4 md:left-4 ${product.labelColor} text-white px-2 py-1 md:px-3 md:py-1.5 rounded-full text-[10px] md:text-xs font-bold flex items-center gap-1 md:gap-1.5`}>
                       <LabelIcon size={10} />
