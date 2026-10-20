@@ -3,8 +3,7 @@ import { useProducts } from '../hooks/useProducts';
 import type { Product } from '../data/products';
 import { useAuth } from './AuthContext';
 import { getFostPrice } from '../data/pricing';
-import { getCampaignDeal } from '../data/campaignDeals';
-import { getHomeFeatured, homeLifestyleImages } from '../data/homeFeatured';
+import { getBestProducts } from '../data/homeFeatured';
 
 type Props = {
   onBack?: () => void;
@@ -17,10 +16,10 @@ export function LaunchExclusivePage({ onBack, onSelectProduct, onJoinFost }: Pro
   const { user } = useAuth();
   const isFostMember = Boolean(user);
 
-  const allDeals = getHomeFeatured(products).map(product => {
-    const campaign = getCampaignDeal(product.handle);
+  const allDeals = getBestProducts(products).map(product => {
+    
     return { handle: product.handle, name: product.title, label: product.vendor,
-      srp: product.price, promo: campaign?.promo ?? product.price };
+      srp: product.price, promo: product.price };
   });
 
   return (
@@ -39,10 +38,10 @@ export function LaunchExclusivePage({ onBack, onSelectProduct, onJoinFost }: Pro
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div>
               <div className="inline-flex items-center gap-1.5 bg-[#F16C10] text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full mb-4">
-                ▶ Launch Exclusive
+                ▶ Get The Best
               </div>
               <h1 className="text-4xl md:text-6xl font-black uppercase leading-none mb-3">
-                Be First To Shop.<br />Get The Best.
+                Get The Best.
               </h1>
               <p className="text-neutral-400 text-sm md:text-base max-w-lg">
                 Explore our latest picks across 5 brands.
@@ -88,7 +87,7 @@ export function LaunchExclusivePage({ onBack, onSelectProduct, onJoinFost }: Pro
                 >
                   <div className="relative aspect-square bg-neutral-50 overflow-hidden">
                     <img
-                      src={homeLifestyleImages[product.handle] ?? product.images[0]}
+                      src={product.images[0]}
                       alt={deal.name}
                       className="w-full h-full object-contain p-4 group-hover:scale-105 transition duration-500"
                       onError={e => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80'; }}

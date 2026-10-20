@@ -2,8 +2,7 @@ import { useProducts } from '../hooks/useProducts';
 import type { Product } from '../data/products';
 import { useAuth } from './AuthContext';
 import { getFostPrice } from '../data/pricing';
-import { getCampaignDeal } from '../data/campaignDeals';
-import { getHomeFeatured, homeLifestyleImages } from '../data/homeFeatured';
+import { getBestProducts } from '../data/homeFeatured';
 
 type Props = {
   onSelectProduct?: (p: Product) => void;
@@ -15,10 +14,10 @@ export function LaunchExclusive({ onSelectProduct, onViewAll }: Props) {
   const { user } = useAuth();
   const isFostMember = Boolean(user);
 
-  const featuredDeals = getHomeFeatured(products).map(product => {
-    const campaign = getCampaignDeal(product.handle);
+  const featuredDeals = getBestProducts(products).map(product => {
+    
     return { handle: product.handle, name: product.title, label: product.vendor,
-      srp: product.price, promo: campaign?.promo ?? product.price };
+      srp: product.price, promo: product.price };
   });
 
   return (
@@ -29,14 +28,14 @@ export function LaunchExclusive({ onSelectProduct, onViewAll }: Props) {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="bg-[#F16C10] text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full">
-                ▶ Launch Exclusive
+                ▶ Get The Best
               </span>
             </div>
             <h2 className="text-[26px] md:text-4xl font-black text-black uppercase leading-tight">
-              Be First To Shop.<br className="md:hidden" /> Get The Best.
+              Get The Best.
             </h2>
             <p className="text-neutral-500 text-sm md:text-base mt-1 max-w-sm">
-              Discover our latest picks in audio, beauty, everyday tech and portable displays.
+              Discover our picks in audio, recovery, everyday tech and video conferencing.
             </p>
           </div>
           <div className="hidden md:flex flex-col items-end text-right shrink-0 ml-6">
@@ -47,7 +46,7 @@ export function LaunchExclusive({ onSelectProduct, onViewAll }: Props) {
                 onClick={onViewAll}
                 className="mt-3 text-xs font-bold text-[#F16C10] hover:underline uppercase tracking-wide"
               >
-                View All Picks →
+                Shop All Picks →
               </button>
             )}
           </div>
@@ -67,7 +66,7 @@ export function LaunchExclusive({ onSelectProduct, onViewAll }: Props) {
               >
                 <div className="relative aspect-square bg-neutral-50 overflow-hidden">
                   <img
-                    src={homeLifestyleImages[product.handle] ?? product.images[0]}
+                    src={product.images[0]}
                     alt={product.title}
                     className="w-full h-full object-contain p-4 group-hover:scale-105 transition duration-500"
                     onError={e => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80'; }}
@@ -103,7 +102,7 @@ export function LaunchExclusive({ onSelectProduct, onViewAll }: Props) {
         {onViewAll && (
           <div className="mt-6 text-center md:hidden">
             <button onClick={onViewAll} className="text-sm font-bold text-[#F16C10] hover:underline uppercase tracking-wide">
-              View All Picks →
+              Shop All Picks →
             </button>
           </div>
         )}

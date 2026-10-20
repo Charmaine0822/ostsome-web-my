@@ -8,7 +8,7 @@ export const HOME_FEATURED_HANDLES = [
   "arzopa-a1t-15-6-fhd-1080p-portable-monitor-with-touchscreen-arzopa-portable-monitor"
 ];
 export const homeLifestyleImages: Record<string, string> = {
-  "arzopa-a1t-15-6-fhd-1080p-portable-monitor-with-touchscreen-arzopa-portable-monitor": "/home-featured/arzopa-a1t.jpg",
+  "arzopa-a1t-15-6-fhd-1080p-portable-monitor-with-touchscreen-arzopa-portable-monitor": "/home-featured/arzopa-a1t-lifestyle.png",
   "sennheiser-momentum-5-wireless-noise-canceling-headphones": "/home-featured/momentum-5.jpg",
   "therabody-theraface-mask-glo-cordless-led-skincare-mask-with-relaxing-massage": "/home-featured/mask-glo.jpg",
   "looki-l1": "/home-featured/looki-l1.jpg",
@@ -18,4 +18,19 @@ export const CRUSHER_HANDLE = "skullcandy-crusher®-720-sensory-bass-headphones"
 export const MTW5_HANDLE = "sennheiser-momentum-true-wireless-5-earbuds-with-free-pouch-ostsome-website-exclusive🎁";
 export function getHomeFeatured(products: Product[]) {
  return HOME_FEATURED_HANDLES.flatMap(handle => { const product = products.find(p => p.handle === handle); return product ? [product] : []; });
+}
+
+// Separate selection: changing Get The Best must not change Latest of the Latest.
+export const GET_BEST_HANDLES = [
+  "sennheiser-momentum-true-wireless-5-earbuds-with-free-pouch-ostsome-website-exclusive🎁",
+  "skullcandy-dime™-360-true-wireless-earbuds",
+  "theragun-mini-3rd-generation",
+  "slim-ex1-wireless-keyboard",
+  "kandao-meeting-pro-2-360-all-in-one-ai-video-conference-device"
+];
+export function getBestProducts(products: Product[]) {
+  return GET_BEST_HANDLES.flatMap(handle => {
+    const product = products.find(p => p.handle === handle);
+    return product ? [product] : [];
+  });
 }
