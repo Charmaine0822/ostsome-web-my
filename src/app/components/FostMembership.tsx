@@ -1,8 +1,8 @@
+import { useProducts } from '../hooks/useProducts';
+import { CRUSHER_HANDLE, MTW5_HANDLE } from '../data/homeFeatured';
+import { getFostPrice } from '../data/pricing';
 import { Crown, Tag, Zap, Users, Gift, CalendarHeart, Heart } from 'lucide-react';
-import sennheiserFOST from '../../imports/Sennheiser FOST.png';
-import firstAccessFOST from '../../imports/First Access FOST.png';
-import newSeasonFOST from '../../imports/New Season FOST.png';
-import layoutImg from '../../imports/Layout FOST.png';
+const layoutImg = '/home-featured/momentum-5.jpg';
 
 const perks = [
   { icon: Tag, title: 'Member-only pricing', description: 'Unlock exclusive prices on selected products.' },
@@ -13,6 +13,12 @@ const perks = [
 ];
 
 export function FostMembership({ onJoin, onLearnMore, onLogin }: { onJoin?: () => void; onLearnMore?: () => void; onLogin?: () => void }) {
+  const { products } = useProducts();
+  const crusher = products.find(p => p.handle === CRUSHER_HANDLE);
+  const mtw5 = products.find(p => p.handle === MTW5_HANDLE);
+  const sennheiserFOST = crusher?.images[0];
+  const firstAccessFOST = '/home-featured/looki-l1.jpg';
+  const newSeasonFOST = mtw5?.images[0];
   return (
     <section className="py-20 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4">
@@ -78,7 +84,7 @@ export function FostMembership({ onJoin, onLearnMore, onLogin }: { onJoin?: () =
             <div className="absolute top-0 left-0 rounded-2xl overflow-hidden shadow-lg" style={{ width: '50%', zIndex: 1 }}>
               <img
                 src={sennheiserFOST}
-                alt="Sennheiser HD 620S"
+                alt="Skullcandy Crusher 720"
                 className="w-full object-cover object-center"
                 style={{ height: '240px' }}
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
@@ -88,13 +94,13 @@ export function FostMembership({ onJoin, onLearnMore, onLogin }: { onJoin?: () =
             {/* Member Pricing card — top right */}
             <div className="absolute top-0 right-0 bg-white border border-neutral-200 rounded-2xl shadow-md p-4" style={{ width: '46%', zIndex: 2 }}>
               <p className="text-[#F16C10] text-[9px] font-bold uppercase tracking-widest mb-2">Member Pricing</p>
-              <p className="text-black text-xs font-bold mb-3 leading-snug">Sennheiser HD 620S Audiophile Headphones</p>
+              <p className="text-black text-xs font-bold mb-3 leading-snug">Skullcandy Crusher 720 Sensory Bass Headphones</p>
               <p className="text-neutral-400 text-[10px] mb-0.5">Public Price</p>
-              <p className="text-neutral-400 text-sm line-through mb-2">RM 1,399</p>
+              <p className="text-neutral-400 text-sm line-through mb-2">{crusher ? `RM ${crusher.price.toFixed(2)}` : 'Loading…'}</p>
               <p className="text-[#F16C10] text-[9px] font-bold uppercase tracking-wider mb-0.5">FOST Price</p>
-              <p className="text-[#F16C10] text-2xl font-bold mb-2">RM 1,329.05</p>
+              <p className="text-[#F16C10] text-2xl font-bold mb-2">{crusher ? `RM ${getFostPrice(crusher.price).toFixed(2)}` : 'Loading…'}</p>
               <div className="bg-[#F16C10]/10 text-[#F16C10] text-[9px] font-bold px-2 py-1 rounded-full inline-block">
-                You save RM 69.95
+                {crusher ? `You save RM ${(crusher.price - getFostPrice(crusher.price)).toFixed(2)}` : 'Member pricing'}
               </div>
             </div>
 
@@ -102,7 +108,7 @@ export function FostMembership({ onJoin, onLearnMore, onLogin }: { onJoin?: () =
             <div className="absolute rounded-2xl overflow-hidden shadow-lg" style={{ top: '210px', left: '0', width: '50%', zIndex: 3 }}>
               <img
                 src={firstAccessFOST}
-                alt="SwitchBot Hub 3"
+                alt="Looki L1"
                 className="w-full object-cover"
                 style={{ height: '200px' }}
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
@@ -112,7 +118,7 @@ export function FostMembership({ onJoin, onLearnMore, onLogin }: { onJoin?: () =
             {/* First Access card */}
             <div className="absolute bg-white border border-neutral-200 rounded-2xl shadow-md p-3" style={{ top: '418px', left: '0', width: '48%', zIndex: 4 }}>
               <p className="text-[#F16C10] text-[9px] font-bold uppercase tracking-wider mb-1">First Access</p>
-              <p className="text-black text-xs font-bold">SwitchBot Hub 3</p>
+              <p className="text-black text-xs font-bold">Looki L1</p>
               <p className="text-neutral-500 text-[10px]">Members saw it first.</p>
             </div>
 
@@ -120,7 +126,7 @@ export function FostMembership({ onJoin, onLearnMore, onLogin }: { onJoin?: () =
             <div className="absolute rounded-2xl overflow-hidden shadow-lg" style={{ top: '260px', right: '0', width: '48%', zIndex: 3 }}>
               <img
                 src={newSeasonFOST}
-                alt="Matador SEG28"
+                alt="Sennheiser MOMENTUM True Wireless 5"
                 className="w-full object-cover"
                 style={{ height: '200px' }}
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
@@ -130,7 +136,7 @@ export function FostMembership({ onJoin, onLearnMore, onLogin }: { onJoin?: () =
             {/* Product Testing card */}
             <div className="absolute bg-white border border-neutral-200 rounded-2xl shadow-md p-3" style={{ top: '468px', right: '0', width: '48%', zIndex: 4 }}>
               <p className="text-[#F16C10] text-[9px] font-bold uppercase tracking-wider mb-1">New This Season</p>
-              <p className="text-black text-xs font-bold">Matador SEG28 Segmented Backpack</p>
+              <p className="text-black text-xs font-bold">Sennheiser MOMENTUM True Wireless 5</p>
               <p className="text-neutral-500 text-[10px]">Now in the OSTSOME lineup.</p>
             </div>
 

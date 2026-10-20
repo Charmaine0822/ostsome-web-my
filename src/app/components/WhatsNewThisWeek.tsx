@@ -4,28 +4,16 @@ import type { Product } from '../data/products';
 import { useAuth } from './AuthContext';
 import { getFostPrice } from '../data/pricing';
 import { useFlashSaleActive, getFlashPrice } from '../data/flashSale';
-import hd505Img from '../../imports/Sennheiser HD 505 Copper Edition Audiophile Headphones.webp';
-import theragunImg from '../../imports/Therabody Theragun™ PRO Plus Percussive Massage Device.avif';
-import matadorImg from '../../imports/Matador Backpack.webp';
-import skullcandyImg from '../../imports/Skullcandy headphones.webp';
-import therafaceImg from '../../imports/therabody TheraFace Hot and Cold Rings.jpeg';
-
-const featured = [
-  { handle: 'hd-505-copper', label: 'New Arrival', labelIcon: Zap, labelColor: 'bg-[#F16C10]' },
-  { handle: 'theragun-pro-plus-6th-generation', label: 'Staff Pick', labelIcon: Star, labelColor: 'bg-amber-500' },
-  { handle: 'beast28-ultralight-technical-backpack', label: 'Trending', labelIcon: TrendingUp, labelColor: 'bg-pink-500' },
-  { handle: 'crusher-anc-2', label: 'Just Dropped', labelIcon: Sparkles, labelColor: 'bg-cyan-500' },
-  { handle: 'theraface-hot-and-cold-rings-1', label: 'Staff Pick', labelIcon: Star, labelColor: 'bg-amber-500' },
+import { HOME_FEATURED_HANDLES, homeLifestyleImages } from '../data/homeFeatured';
+const labels = [
+  { label: 'New Arrival', labelIcon: Zap, labelColor: 'bg-[#F16C10]' },
+  { label: 'Staff Pick', labelIcon: Star, labelColor: 'bg-amber-500' },
+  { label: 'Trending', labelIcon: TrendingUp, labelColor: 'bg-pink-500' },
+  { label: 'Just Dropped', labelIcon: Sparkles, labelColor: 'bg-cyan-500' },
+  { label: 'Staff Pick', labelIcon: Star, labelColor: 'bg-amber-500' },
 ];
-
-// Local lifestyle image overrides, keyed by handle
-const lifestyleImages: Record<string, string> = {
-  'hd-505-copper': hd505Img,
-  'theragun-pro-plus-6th-generation': theragunImg,
-  'beast28-ultralight-technical-backpack': matadorImg,
-  'crusher-anc-2': skullcandyImg,
-  'theraface-hot-and-cold-rings-1': therafaceImg,
-};
+const featured = HOME_FEATURED_HANDLES.map((handle, i) => ({ handle, ...labels[i] }));
+const lifestyleImages = homeLifestyleImages;
 
 type FeaturedProduct = Product & { label: string; labelIcon: React.ElementType; labelColor: string };
 
@@ -46,7 +34,7 @@ export function WhatsNewThisWeek({ onShopAll, onSelectProduct }: { onShopAll?: (
   if (featuredProducts.length === 0) return (
     <section className="py-12 md:py-16 bg-neutral-50">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="mb-6 md:mb-10 flex items-end justify-between">
+        <div className="mb-6 md:mb-10 flex flex-wrap gap-y-3 items-end justify-between">
           <div>
             <h2 className="text-[26px] md:text-4xl font-bold text-black mb-2 uppercase">Latest of the LATEST</h2>
             <p className="text-[14px] md:text-base text-neutral-600">We find it first. You get it first.</p>
@@ -71,7 +59,7 @@ export function WhatsNewThisWeek({ onShopAll, onSelectProduct }: { onShopAll?: (
   return (
     <section className="py-12 md:py-16 bg-neutral-50">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="mb-6 md:mb-10 flex items-end justify-between">
+        <div className="mb-6 md:mb-10 flex flex-wrap gap-y-3 items-end justify-between">
           <div className="text-left md:text-center md:flex-1">
             <h2 className="text-[26px] md:text-4xl font-bold text-black mb-2 uppercase">Latest of the LATEST</h2>
             <p className="text-[14px] md:text-base text-neutral-600">We find it first. You get it first.</p>
@@ -111,20 +99,20 @@ export function WhatsNewThisWeek({ onShopAll, onSelectProduct }: { onShopAll?: (
                 <div className="p-3 md:p-5">
                   <p className="text-[9px] md:text-[10px] font-semibold text-[#F16C10] uppercase tracking-widest mb-1">{product.vendor}</p>
                   <h3 className="text-sm md:text-base font-bold text-black mb-2 md:mb-3 line-clamp-1">{product.title}</h3>
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-wrap gap-2 items-center justify-between">
                     {(() => {
                       const flashSalePrice = getFlashPrice(product.handle);
                       const showFlashPrice = isFostMember && flashSaleActive && flashSalePrice !== undefined;
                       if (showFlashPrice) {
                         return (
-                          <div className="flex items-center gap-1.5">
+                          <div className="flex flex-wrap items-center gap-1.5">
                             <span className="text-base md:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-pink-500">RM {flashSalePrice.toFixed(2)}</span>
                             <span className="text-[9px] md:text-[10px] text-neutral-400 line-through">RM {product.price.toFixed(2)}</span>
                           </div>
                         );
                       }
                       return isFostMember ? (
-                        <div className="flex items-center gap-1.5">
+                        <div className="flex flex-wrap items-center gap-1.5">
                           <span className="text-base md:text-xl font-bold text-[#F16C10]">RM {getFostPrice(product.price).toFixed(2)}</span>
                           <span className="text-[9px] md:text-[10px] text-neutral-400 line-through">RM {product.price.toFixed(2)}</span>
                         </div>
@@ -167,20 +155,20 @@ export function WhatsNewThisWeek({ onShopAll, onSelectProduct }: { onShopAll?: (
                   <div className="p-3 md:p-5 flex flex-col justify-center w-full md:w-1/2">
                     <p className="text-[9px] md:text-[10px] font-semibold text-[#F16C10] uppercase tracking-widest mb-1">{product.vendor}</p>
                     <h3 className="text-sm md:text-base font-bold text-black mb-2 line-clamp-2">{product.title}</h3>
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-wrap gap-2 items-center justify-between">
                       {(() => {
                         const flashSalePrice = getFlashPrice(product.handle);
                         const showFlashPrice = isFostMember && flashSaleActive && flashSalePrice !== undefined;
                         if (showFlashPrice) {
                           return (
-                            <div className="flex items-center gap-1.5">
+                            <div className="flex flex-wrap items-center gap-1.5">
                               <span className="text-base md:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-pink-500">RM {flashSalePrice.toFixed(2)}</span>
                               <span className="text-[9px] md:text-[10px] text-neutral-400 line-through">RM {product.price.toFixed(2)}</span>
                             </div>
                           );
                         }
                         return isFostMember ? (
-                          <div className="flex items-center gap-1.5">
+                          <div className="flex flex-wrap items-center gap-1.5">
                             <span className="text-base md:text-xl font-bold text-[#F16C10]">RM {getFostPrice(product.price).toFixed(2)}</span>
                             <span className="text-[9px] md:text-[10px] text-neutral-400 line-through">RM {product.price.toFixed(2)}</span>
                           </div>

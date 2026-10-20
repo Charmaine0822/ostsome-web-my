@@ -2,7 +2,8 @@ import { useProducts } from '../hooks/useProducts';
 import type { Product } from '../data/products';
 import { useAuth } from './AuthContext';
 import { getFostPrice } from '../data/pricing';
-import { getCampaignDeal, LAUNCH_FEATURED_HANDLES, type CampaignDeal } from '../data/campaignDeals';
+import { getCampaignDeal } from '../data/campaignDeals';
+import { getHomeFeatured, homeLifestyleImages } from '../data/homeFeatured';
 
 type Props = {
   onSelectProduct?: (p: Product) => void;
@@ -14,13 +15,11 @@ export function LaunchExclusive({ onSelectProduct, onViewAll }: Props) {
   const { user } = useAuth();
   const isFostMember = Boolean(user);
 
-  // Pulled from the shared campaign pricing sheet (campaignDeals.ts) — do
-  // NOT hardcode srp/promo here again, that's what caused the PDP price
-  // mismatch bug. Each handle in LAUNCH_FEATURED_HANDLES has exactly one
-  // (non-ambiguous) deal entry, so getCampaignDeal() is safe to use here.
-  const featuredDeals = LAUNCH_FEATURED_HANDLES
-    .map(h => getCampaignDeal(h))
-    .filter((d): d is CampaignDeal => Boolean(d));
+  const featuredDeals = getHomeFeatured(products).map(product => {
+    const campaign = getCampaignDeal(product.handle);
+    return { handle: product.handle, name: product.title, label: product.vendor,
+      srp: product.price, promo: campaign?.promo ?? product.price };
+  });
 
   return (
     <section className="py-12 md:py-16 bg-white">
@@ -37,18 +36,18 @@ export function LaunchExclusive({ onSelectProduct, onViewAll }: Props) {
               Be First To Shop.<br className="md:hidden" /> Get The Best.
             </h2>
             <p className="text-neutral-500 text-sm md:text-base mt-1 max-w-sm">
-              Early shoppers on OSTSOME enjoy exclusive launch pricing on our top picks. Shop early, save more.
+              Discover our latest picks in audio, beauty, everyday tech and portable displays.
             </p>
           </div>
           <div className="hidden md:flex flex-col items-end text-right shrink-0 ml-6">
-            <span className="text-4xl font-black text-[#F16C10]">Up to 9%</span>
-            <span className="text-xs text-neutral-400 uppercase tracking-widest">Early Bird Off</span>
+            <span className="text-4xl font-black text-[#F16C10]">New Picks</span>
+            <span className="text-xs text-neutral-400 uppercase tracking-widest">Discover More</span>
             {onViewAll && (
               <button
                 onClick={onViewAll}
                 className="mt-3 text-xs font-bold text-[#F16C10] hover:underline uppercase tracking-wide"
               >
-                View All Deals →
+                View All Picks →
               </button>
             )}
           </div>
@@ -68,15 +67,15 @@ export function LaunchExclusive({ onSelectProduct, onViewAll }: Props) {
               >
                 <div className="relative aspect-square bg-neutral-50 overflow-hidden">
                   <img
-                    src={product.images[0]}
+                    src={homeLifestyleImages[product.handle] ?? product.images[0]}
                     alt={product.title}
                     className="w-full h-full object-contain p-4 group-hover:scale-105 transition duration-500"
                     onError={e => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80'; }}
                   />
                   <div className="absolute top-2 left-2 bg-[#F16C10] text-white text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-full">
-                    Early Bird
+                    Featured
                   </div>
-                  <div className="absolute top-2 right-2 bg-[#E8291C] text-white text-[10px] font-black rounded-full w-9 h-9 flex items-center justify-center leading-none">
+                  <div hidden={pct <= 0} className="absolute top-2 right-2 bg-[#E8291C] text-white text-[10px] font-black rounded-full w-9 h-9 flex items-center justify-center leading-none">
                     -{pct}%
                   </div>
                 </div>
@@ -91,7 +90,7 @@ export function LaunchExclusive({ onSelectProduct, onViewAll }: Props) {
                   ) : (
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-base md:text-lg font-black text-black">RM {deal.promo.toFixed(2)}</span>
-                      <span className="text-xs text-neutral-400 line-through">RM {deal.srp.toFixed(2)}</span>
+                      {deal.srp > deal.promo && <span className="text-xs text-neutral-400 line-through">RM {deal.srp.toFixed(2)}</span>}
                     </div>
                   )}
                 </div>
@@ -104,13 +103,13 @@ export function LaunchExclusive({ onSelectProduct, onViewAll }: Props) {
         {onViewAll && (
           <div className="mt-6 text-center md:hidden">
             <button onClick={onViewAll} className="text-sm font-bold text-[#F16C10] hover:underline uppercase tracking-wide">
-              View All Launch Deals →
+              View All Picks →
             </button>
           </div>
         )}
 
         <p className="text-center text-xs text-neutral-400 mt-6">
-          * Launch pricing available for a limited time only. While stocks last.
+          Prices and availability follow the selected product.
         </p>
       </div>
     </section>

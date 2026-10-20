@@ -3,7 +3,8 @@ import { useProducts } from '../hooks/useProducts';
 import type { Product } from '../data/products';
 import { useAuth } from './AuthContext';
 import { getFostPrice } from '../data/pricing';
-import { getDealsByCampaign } from '../data/campaignDeals';
+import { getCampaignDeal } from '../data/campaignDeals';
+import { getHomeFeatured, homeLifestyleImages } from '../data/homeFeatured';
 
 type Props = {
   onBack?: () => void;
@@ -16,12 +17,11 @@ export function LaunchExclusivePage({ onBack, onSelectProduct, onJoinFost }: Pro
   const { user } = useAuth();
   const isFostMember = Boolean(user);
 
-  // Every Launch Exclusive deal entry, pulled from the shared campaign
-  // pricing sheet (campaignDeals.ts). Handles with multiple entries (a few
-  // ARZOPA monitors/frames sharing one handle across different sizes/
-  // colors — see the DATA GAP note in campaignDeals.ts) are preserved as
-  // separate cards here on purpose, same as the old local ALL_DEALS array.
-  const allDeals = getDealsByCampaign('launch');
+  const allDeals = getHomeFeatured(products).map(product => {
+    const campaign = getCampaignDeal(product.handle);
+    return { handle: product.handle, name: product.title, label: product.vendor,
+      srp: product.price, promo: campaign?.promo ?? product.price };
+  });
 
   return (
     <div className="min-h-screen bg-white">
@@ -45,14 +45,14 @@ export function LaunchExclusivePage({ onBack, onSelectProduct, onJoinFost }: Pro
                 Be First To Shop.<br />Get The Best.
               </h1>
               <p className="text-neutral-400 text-sm md:text-base max-w-lg">
-                Early Ostsome shoppers get exclusive early bird discounts across 5 brands.
-                Shop early, save more — limited time, while stocks last.
+                Explore our latest picks across 5 brands.
+                Find your next everyday favourite.
               </p>
             </div>
             <div className="text-left md:text-right shrink-0">
-              <div className="text-xs font-bold text-neutral-500 uppercase tracking-widest mb-1">Early Bird Off</div>
-              <div className="text-6xl md:text-7xl font-black text-[#F16C10] leading-none">Up to</div>
-              <div className="text-6xl md:text-7xl font-black text-white leading-none">9%</div>
+              <div className="text-xs font-bold text-neutral-500 uppercase tracking-widest mb-1">Discover More</div>
+              <div className="text-6xl md:text-7xl font-black text-[#F16C10] leading-none">Latest</div>
+              <div className="text-6xl md:text-7xl font-black text-white leading-none">Picks</div>
             </div>
           </div>
         </div>
@@ -61,7 +61,7 @@ export function LaunchExclusivePage({ onBack, onSelectProduct, onJoinFost }: Pro
       {/* Disclaimer */}
       <div className="bg-[#FFF4EC] border-b border-orange-100 py-2 px-4 text-center">
         <p className="text-xs text-[#F16C10] font-medium">
-          ⏱ Launch pricing is for a limited time only. While stocks last. All prices include SST.
+          Explore the latest arrivals. Prices and availability follow the selected product.
         </p>
       </div>
 
@@ -88,15 +88,15 @@ export function LaunchExclusivePage({ onBack, onSelectProduct, onJoinFost }: Pro
                 >
                   <div className="relative aspect-square bg-neutral-50 overflow-hidden">
                     <img
-                      src={product.images?.[0]}
+                      src={homeLifestyleImages[product.handle] ?? product.images[0]}
                       alt={deal.name}
                       className="w-full h-full object-contain p-4 group-hover:scale-105 transition duration-500"
                       onError={e => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80'; }}
                     />
                     <div className="absolute top-2 left-2 bg-[#F16C10] text-white text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-full">
-                      Early Bird
+                      Featured
                     </div>
-                    <div className="absolute top-2 right-2 bg-[#E8291C] text-white text-[10px] font-black rounded-full w-9 h-9 flex items-center justify-center leading-none">
+                    <div hidden={pct <= 0} className="absolute top-2 right-2 bg-[#E8291C] text-white text-[10px] font-black rounded-full w-9 h-9 flex items-center justify-center leading-none">
                       -{pct}%
                     </div>
                   </div>
@@ -115,9 +115,9 @@ export function LaunchExclusivePage({ onBack, onSelectProduct, onJoinFost }: Pro
                       <>
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="text-base font-black text-black">RM {deal.promo.toFixed(2)}</span>
-                          <span className="text-xs text-neutral-400 line-through">RM {deal.srp.toFixed(2)}</span>
+                          {deal.srp > deal.promo && <span className="text-xs text-neutral-400 line-through">RM {deal.srp.toFixed(2)}</span>}
                         </div>
-                        <p className="text-[10px] text-green-600 font-semibold mt-0.5">You save RM {saving}</p>
+                        {deal.srp > deal.promo && <p className="text-[10px] text-green-600 font-semibold mt-0.5">You save RM {saving}</p>}
                       </>
                     )}
                   </div>

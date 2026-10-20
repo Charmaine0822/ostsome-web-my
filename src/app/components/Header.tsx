@@ -151,27 +151,27 @@ export function Header({ onNavToProducts, onNavToHome, onNavToBrands, onNavToCat
       <header className="w-full">
         {/* Logo + Icons Row */}
         <div className="bg-white text-black border-b border-neutral-100">
-          <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-24 md:h-28">
+          <div className="max-w-7xl mx-auto px-3 md:px-4 flex items-center justify-between gap-2 h-24 md:h-28">
 
             {/* Logo + Tagline */}
             <button
-              className="flex items-center gap-3 h-full py-3"
+              className="flex min-w-0 items-center gap-2 md:gap-3 h-full py-3"
               onClick={onNavToHome}
             >
               <img
                 src={logoImg}
                 alt="OSTSOME"
-                className="h-full w-auto object-contain object-left"
+                className="h-auto w-14 sm:w-16 md:w-auto md:h-full shrink-0 object-contain object-left"
               />
               {/* Mobile tagline — visible only on small screens */}
-              <div className="flex md:hidden flex-col justify-center gap-0">
+              <div className="flex min-w-0 md:hidden flex-col justify-center gap-0">
                 <span className="text-[11px] font-bold text-black tracking-tight leading-none">
                   The Tech You Choose.
                 </span>
                 <span className="text-[11px] font-bold text-[#F16C10] tracking-tight leading-none mt-0.5">
                   The Support You Deserve.
                 </span>
-                <span className="text-[9px] text-neutral-400 uppercase tracking-widest mt-1">
+                <span className="text-[8px] sm:text-[9px] text-neutral-400 uppercase tracking-wide mt-1">
                   Powered by Streamcast Asia
                 </span>
               </div>
@@ -193,7 +193,7 @@ export function Header({ onNavToProducts, onNavToHome, onNavToBrands, onNavToCat
             </button>
 
 
-            <div className="flex items-center gap-4">
+            <div className="flex shrink-0 items-center gap-2 md:gap-4">
               {/* Notification Feed — sits just left of icons */}
               <div className="hidden lg:block relative w-[260px] h-[68px] shrink-0">
                 {notificationFeed.map((n, i) => (
