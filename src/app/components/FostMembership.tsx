@@ -1,5 +1,5 @@
 import { useProducts } from '../hooks/useProducts';
-import { CRUSHER_HANDLE, MTW5_HANDLE } from '../data/homeFeatured';
+import { CRUSHER_HANDLE } from '../data/homeFeatured';
 import { getFostPrice } from '../data/pricing';
 import { Crown, Tag, Zap, Users, Gift, CalendarHeart, Heart } from 'lucide-react';
 
@@ -14,10 +14,9 @@ const perks = [
 export function FostMembership({ onJoin, onLearnMore, onLogin }: { onJoin?: () => void; onLearnMore?: () => void; onLogin?: () => void }) {
   const { products } = useProducts();
   const crusher = products.find(p => p.handle === CRUSHER_HANDLE);
-  const mtw5 = products.find(p => p.handle === MTW5_HANDLE);
-  const sennheiserFOST = crusher?.images[0];
-  const firstAccessFOST = '/home-featured/looki-l1.jpg';
-  const newSeasonFOST = mtw5?.images[0];
+  const sennheiserFOST = '/home-featured/fost-crusher720-lifestyle.jpg';
+  const firstAccessFOST = '/home-featured/fost-looki-lifestyle.jpg';
+  const newSeasonFOST = '/home-featured/fost-mtw5-lifestyle.jpg';
   return (
     <section className="py-20 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4">
@@ -79,8 +78,8 @@ export function FostMembership({ onJoin, onLearnMore, onLogin }: { onJoin?: () =
           {/* Product cards flow naturally: no overlaps or cropped product photos. */}
           <div className="grid grid-cols-2 gap-4 min-w-0">
             <article className="col-span-2 grid grid-cols-1 sm:grid-cols-2 bg-white border border-neutral-200 rounded-2xl overflow-hidden shadow-sm">
-              <div className="aspect-[4/3] sm:aspect-auto sm:min-h-[220px] bg-white flex items-center justify-center p-8">
-                {sennheiserFOST && <img src={sennheiserFOST} alt="Skullcandy Crusher 720" className="w-full h-full max-h-[190px] object-contain" />}
+              <div className="relative aspect-[4/3] sm:aspect-auto min-h-[240px] overflow-hidden bg-neutral-100">
+                {sennheiserFOST && <img src={sennheiserFOST} alt="Skullcandy Crusher 720" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: '50% 30%' }} />}
               </div>
               <div className="p-5 sm:py-7 flex flex-col justify-center items-start">
                 <p className="text-[#F16C10] text-[10px] font-bold uppercase tracking-widest mb-2">Member Pricing</p>
@@ -103,8 +102,8 @@ export function FostMembership({ onJoin, onLearnMore, onLogin }: { onJoin?: () =
               </div>
             </article>
             <article className="min-w-0 grid grid-rows-[auto_1fr] bg-white border border-neutral-200 rounded-2xl overflow-hidden shadow-sm">
-              <div className="aspect-[4/3] bg-white p-3 sm:p-5">
-                {newSeasonFOST && <img src={newSeasonFOST} alt="Sennheiser MOMENTUM True Wireless 5" className="w-full h-full object-contain" />}
+              <div className="aspect-[4/3] overflow-hidden bg-neutral-50">
+                {newSeasonFOST && <img src={newSeasonFOST} alt="Sennheiser MOMENTUM True Wireless 5" className="w-full h-full object-cover" style={{ objectPosition: '38% 35%' }} />}
               </div>
               <div className="p-4 min-h-[132px]">
                 <p className="text-[#F16C10] text-[10px] font-bold uppercase tracking-wider mb-2">New This Season</p>
