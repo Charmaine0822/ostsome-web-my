@@ -9,7 +9,7 @@ const banners = [
   { label: "Skullcandy", image: "/home-banners/skullcandy.png", query: "crusher 720" },
   { label: "Matador", image: "/home-banners/matador.png", query: "globerider35" },
   { label: "Turtle Beach", image: "/home-banners/turtle-beach.png", query: "velocityone multi-shift" },
-  { label: "Satechi", image: "/home-banners/satechi.png", query: "stand & hub with ssd enclosure" },
+  { label: "Satechi", image: "/home-banners/satechi.png", query: "satechi" },
   { label: "Kandao", image: "/home-banners/kandao.png", query: "meeting pro 2" },
   { label: "Arzopa", image: "/home-banners/arzopa.png", query: "a1t" },
   { label: "SwitchBot", image: "/home-banners/switchbot.png", query: "curtain 3 rod" },
