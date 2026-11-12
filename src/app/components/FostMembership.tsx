@@ -4,7 +4,10 @@ import { getFostPrice } from '../data/pricing';
 import { Crown, Tag, Zap, Users, Gift, CalendarHeart, Heart } from 'lucide-react';
 
 const perks = [
+  { icon: Tag, title: 'RM1 = 1 FOST Point', description: 'Earn points on eligible purchases, with planned redemption offers for Satechi and Looki. Redemption is coming soon.' },
+  { icon: Gift, title: '+3 Months Extended Warranty', description: 'For eligible registered FOST members only. Scan the parcel QR card, sign in and contact us with your receipt for verification.' },
   { icon: Tag, title: 'Member-only pricing', description: 'Unlock exclusive prices on selected products.' },
+  { icon: Gift, title: 'Birthday & Referral Rewards', description: 'Planned: RM20 birthday-month voucher and RM30 each for you and a referred friend. Terms and launch date to be announced.' },
   { icon: Zap, title: 'Early access to launches', description: 'Be the first to shop new drops & restocks.' },
   { icon: Users, title: 'Product testing opportunities', description: "Test upcoming products and help shape what's next." },
   { icon: Gift, title: 'Surprise member flash sales', description: 'Enjoy surprise deals and member-only offers.' },
