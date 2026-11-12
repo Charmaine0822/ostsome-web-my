@@ -15,6 +15,7 @@ import { ContactAndTrust } from './components/ContactAndTrust';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { FostMembership } from './components/FostMembership';
 import { FostMembershipPage } from './components/FostMembershipPage';
+import { WarrantyPage } from './components/WarrantyPage';
 import { ProductListing } from './components/ProductListing';
 import { ProductDetail } from './components/ProductDetail';
 import { BrandsPage } from './components/BrandsPage';
@@ -35,7 +36,7 @@ import type { Tab as AccountTab } from './components/AccountPage';
 import { useProducts } from './hooks/useProducts';
 import type { Product } from './data/products';
 
-type Page = 'home' | 'products' | 'product-detail' | 'brands' | 'brand-detail' | 'nav-category' | 'checkout' | 'account' | 'admin' | 'launch-exclusive' | 'one-season-off' | 'fost-membership' | 'study-mode' | 'travel-ready' | 'smart-home';
+type Page = 'home' | 'products' | 'product-detail' | 'brands' | 'brand-detail' | 'nav-category' | 'checkout' | 'account' | 'admin' | 'launch-exclusive' | 'one-season-off' | 'fost-membership' | 'warranty' | 'study-mode' | 'travel-ready' | 'smart-home';
 
 // Everything needed to fully restore a screen — this is what gets stored in
 // browser history so the back/forward buttons can actually move between
@@ -73,6 +74,8 @@ function buildUrl(state: NavState): string {
       return '/clearance';
     case 'fost-membership':
       return '/fost';
+    case 'warranty':
+      return '/warranty';
     case 'study-mode':
       return '/study-mode';
     case 'travel-ready':
@@ -266,6 +269,8 @@ function AppInner() {
       goTo({ page: 'one-season-off' }, { replace: true, scroll: false });
     } else if (path === '/fost') {
       goTo({ page: 'fost-membership' }, { replace: true, scroll: false });
+    } else if (path === '/warranty') {
+      goTo({ page: 'warranty' }, { replace: true, scroll: false });
     } else if (path === '/study-mode') {
       goTo({ page: 'study-mode' }, { replace: true, scroll: false });
     } else if (path === '/travel-ready') {
@@ -468,6 +473,14 @@ function AppInner() {
 
       {page === 'fost-membership' && (
         <FostMembershipPage
+          onBack={() => goTo({ page: 'home' })}
+          onJoin={() => setAuthModal({ open: true, view: 'signup' })}
+          onLogin={() => setAuthModal({ open: true, view: 'login' })}
+        />
+      )}
+
+      {page === 'warranty' && (
+        <WarrantyPage
           onBack={() => goTo({ page: 'home' })}
           onJoin={() => setAuthModal({ open: true, view: 'signup' })}
           onLogin={() => setAuthModal({ open: true, view: 'login' })}
