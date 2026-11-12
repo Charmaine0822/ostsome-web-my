@@ -23,7 +23,7 @@ const perks = [
   {
     icon: Coins,
     title: 'Earn Points: RM1 = 1 pt',
-    description: 'Every RM1 you spend earns 1 point. Redeem points on Satechi and Looki products.',
+    description: 'Every RM1 you spend earns 1 point. Every 10 points = RM1 off Satechi and Looki products.',
   },
   {
     icon: Repeat,

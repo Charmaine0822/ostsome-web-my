@@ -583,7 +583,7 @@ function MemberRewards() {
       <div className="rounded-2xl border border-neutral-200 p-5">
         <p className="text-xs text-neutral-500 mb-1">Your points</p>
         <p className="text-3xl font-bold text-black">{info.points.toLocaleString()} <span className="text-sm font-semibold text-neutral-400">pts</span></p>
-        <p className="text-xs text-neutral-400 mt-1">RM1 = 1 pt. Redeem on Satechi / Looki at the cart.{info.holdPoints > 0 && ` ${info.holdPoints} pts reserved in a checkout.`}</p>
+        <p className="text-xs text-neutral-400 mt-1">RM1 = 1 pt. 10 pts = RM1 off Satechi / Looki, redeem at the cart.{info.holdPoints > 0 && ` ${info.holdPoints} pts reserved in a checkout.`}</p>
       </div>
       <div className="rounded-2xl border border-neutral-200 p-5">
         <p className="text-xs text-neutral-500 mb-1">Your referral code: friends get RM30, you get RM30</p>
@@ -618,7 +618,7 @@ function MemberPerks() {
     {
       icon: Gift,
       title: 'Points, Birthday Voucher & Referral',
-      desc: 'RM1 = 1 pt (redeem on Satechi / Looki). RM20 birthday voucher (birthday month only). Refer a friend: you both get RM30.',
+      desc: 'RM1 = 1 pt; 10 pts = RM1 off Satechi / Looki. RM20 birthday voucher (birthday month only). Refer a friend: you both get RM30.',
       status: 'Active',
       color: 'bg-yellow-50 border-yellow-100',
       iconColor: 'text-yellow-600',

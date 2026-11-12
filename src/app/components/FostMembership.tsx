@@ -6,7 +6,7 @@ import { Crown, Tag, Zap, Users, Gift, CalendarHeart, Heart, ShieldCheck, Coins,
 const perks = [
   { icon: Tag, title: 'Member-only pricing', description: 'Unlock exclusive prices on selected products.' },
   { icon: ShieldCheck, title: '+3 months warranty', description: 'Extra warranty for FOST members. Scan the QR card in your parcel to claim.' },
-  { icon: Coins, title: 'RM1 = 1 point', description: 'Redeem points on Satechi and Looki products.' },
+  { icon: Coins, title: 'RM1 = 1 point', description: 'Every 10 points = RM1 off Satechi and Looki products.' },
   { icon: Repeat, title: 'Trade-in upgrades', description: 'Trade in your Sennheiser MOMENTUM 4 for the MOMENTUM 5 series.' },
   { icon: Cake, title: 'RM20 birthday voucher', description: 'Valid during your birthday month only.' },
   { icon: UserPlus, title: 'Refer a friend: RM30 each', description: 'You get RM30, your friend gets RM30.' },

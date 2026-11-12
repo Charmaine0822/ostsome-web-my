@@ -16,6 +16,7 @@ import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { FostMembership } from './components/FostMembership';
 import { FostMembershipPage } from './components/FostMembershipPage';
 import { WarrantyPage } from './components/WarrantyPage';
+import { PointsBanner } from './components/PointsBanner';
 import { ProductListing } from './components/ProductListing';
 import { ProductDetail } from './components/ProductDetail';
 import { BrandsPage } from './components/BrandsPage';
@@ -361,6 +362,10 @@ function AppInner() {
           <Hero
             products={liveProducts}
             onSelectProduct={handleSelectProduct}
+          />
+          <PointsBanner
+            onJoin={() => setAuthModal({ open: true, view: 'signup' })}
+            onViewPoints={() => goTo({ page: 'account', accountTab: 'perks' })}
           />
           <FridayFlashDeals
             products={flashDealProducts}
