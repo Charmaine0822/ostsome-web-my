@@ -10,7 +10,7 @@ const NS = 'ostsome';
 // ── Business rules: change here ──────────────────────────────────────────────
 const CFG = {
   EARN_PER_RM: 1,                          // RM1 spent = 1 point
-  POINT_VALUE_RM: 1,                       // 1 point = RM1 off when redeeming
+  POINTS_PER_RM_OFF: 10,                   // 10 points = RM1 off when redeeming
   ELIGIBLE_VENDORS: ['satechi', 'looki'],  // points can only be used on these brands
   BIRTHDAY_RM: 20,
   REFERRAL_RM: 30,

@@ -27,9 +27,11 @@ exports.handler = async event => {
     }
     if (!eligible.length) return respond(400, { error: 'Points can only be used on Satechi and Looki products.' });
 
-    const pts = Math.min(p.points, Math.floor(eligibleTotal / CFG.POINT_VALUE_RM));
-    if (pts < 1) return respond(400, { error: 'Not enough points.' });
-    const amount = pts * CFG.POINT_VALUE_RM;
+    // Redeem in whole-RM steps: usable points = min(balance, 10 x eligible RM), rounded down to a multiple of 10.
+    const maxPts = Math.min(p.points, Math.floor((Math.round(eligibleTotal * 100) * CFG.POINTS_PER_RM_OFF) / 100));
+    const pts = Math.floor(maxPts / CFG.POINTS_PER_RM_OFF) * CFG.POINTS_PER_RM_OFF;
+    if (pts < CFG.POINTS_PER_RM_OFF) return respond(400, { error: `You need at least ${CFG.POINTS_PER_RM_OFF} points (= RM1) to redeem.` });
+    const amount = pts / CFG.POINTS_PER_RM_OFF;
     const expires = new Date(Date.now() + CFG.HOLD_MINUTES * 60000).toISOString();
     const v = await createVoucher({ prefix: 'PTS', title: 'FOST points redemption', amount, customerId: me.id, endsAt: expires, variantIds: eligible });
     p.points -= pts;
