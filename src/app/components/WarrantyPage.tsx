@@ -13,7 +13,7 @@ export function WarrantyPage({ onBack, onJoin, onLogin }: WarrantyPageProps) {
   const { user } = useAuth();
 
   const message = user
-    ? `Hi, I'm a FOST member and would like to claim my +3 months warranty.\nName: ${user.firstName} ${user.lastName}\nEmail: ${user.email}\nI'm attaching my order receipt / order number.`
+    ? `Hi, I'm a FOST member and would like to claim my +3 months warranty.\nName: ${user.firstName} ${user.lastName}\nEmail: ${user.email}\nI'm attaching my order receipt.`
     : '';
   const waHref = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(message)}`;
 
@@ -59,7 +59,7 @@ export function WarrantyPage({ onBack, onJoin, onLogin }: WarrantyPageProps) {
             <p className="text-black font-bold text-sm mb-2">Submit your warranty request</p>
             <ol className="text-neutral-500 text-sm leading-relaxed list-decimal pl-5 mb-6 space-y-1">
               <li>Tap the button below to message us on WhatsApp.</li>
-              <li>Send us your order receipt (or order number).</li>
+              <li>Send us a photo or screenshot of your order receipt.</li>
               <li>We'll verify your order and activate your +3 months.</li>
             </ol>
             <a href={waHref} target="_blank" rel="noopener noreferrer"

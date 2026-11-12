@@ -5,6 +5,9 @@ import { useAuth } from './AuthContext';
 import { getFostPrice } from '../data/pricing';
 import { isFlashSaleActiveNow, getFlashPriceForItem } from '../data/flashSale';
 import { trackMetaEvent } from '../lib/metaPixel';
+import { redeemPoints, releasePoints } from '../data/member';
+
+export type PointsApplied = { code: string; pointsUsed: number; amount: number };
 
 export type CartItem = {
   product: Product;
@@ -32,6 +35,11 @@ type CartContextType = {
   closeCart: () => void;
   goToShopifyCheckout: () => Promise<void>;
   checkoutLoading: boolean;
+  pointsApplied: PointsApplied | null;
+  pointsLoading: boolean;
+  pointsError: string;
+  applyPoints: () => Promise<void>;
+  removePoints: () => Promise<void>;
 };
 
 const CartContext = createContext<CartContextType | null>(null);
@@ -55,6 +63,26 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>(() => loadPersistedCart());
   const [isOpen, setIsOpen] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [pointsApplied, setPointsApplied] = useState<PointsApplied | null>(null);
+  const [pointsLoading, setPointsLoading] = useState(false);
+  const [pointsError, setPointsError] = useState('');
+
+  // Reserves points for the Satechi / Looki items in the cart and returns a single-use code.
+  const applyPoints = useCallback(async () => {
+    if (!shopifyToken) return;
+    setPointsLoading(true); setPointsError('');
+    try {
+      const lines = items.filter(i => i.shopifyVariantId).map(i => ({ id: i.shopifyVariantId!, qty: i.qty }));
+      const r = await redeemPoints(shopifyToken, lines);
+      setPointsApplied({ code: r.code, pointsUsed: r.pointsUsed, amount: r.amount });
+    } catch (e) { setPointsError(e instanceof Error ? e.message : 'Could not apply points'); }
+    setPointsLoading(false);
+  }, [items, shopifyToken]);
+
+  const removePoints = useCallback(async () => {
+    setPointsApplied(null); setPointsError('');
+    if (shopifyToken) releasePoints(shopifyToken).catch(() => {});
+  }, [shopifyToken]);
 
   // Persist the cart to localStorage on every change, so refreshing the
   // page or navigating back from checkout (via the logo, or the browser's
@@ -185,7 +213,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       // FOST5 is an automatic order discount, not a discount code.
       // Shopify evaluates eligibility using the customer linked to this cart.
       let cart = await createCart(
-        undefined,
+        pointsApplied ? [pointsApplied.code] : undefined,
         shopifyToken ?? undefined
       );
 
@@ -212,7 +240,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       alert('Something went wrong. Please try again.');
       setCheckoutLoading(false);
     }
-  }, [items, isFostMember, shopifyToken]);
+  }, [items, isFostMember, shopifyToken, pointsApplied]);
 
   const totalItems = items.reduce((sum, i) => sum + i.qty, 0);
   const subtotal = items.reduce((sum, i) => sum + i.variantPrice * i.qty, 0);
@@ -233,6 +261,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       totalItems, subtotal, isFostMember, fostSubtotal, fostSavings,
       isOpen, openCart: () => setIsOpen(true), closeCart: () => setIsOpen(false),
       goToShopifyCheckout, checkoutLoading,
+      pointsApplied, pointsLoading, pointsError, applyPoints, removePoints,
     }}>
       {children}
     </CartContext.Provider>

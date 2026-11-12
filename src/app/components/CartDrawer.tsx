@@ -7,7 +7,9 @@ export function CartDrawer() {
   const {
     items, removeItem, updateQty, subtotal, totalItems, isOpen, closeCart,
     goToShopifyCheckout, checkoutLoading, isFostMember, fostSubtotal, fostSavings,
+    pointsApplied, pointsLoading, pointsError, applyPoints, removePoints,
   } = useCart();
+  const hasPointsItems = items.some(i => /satechi|looki/i.test(i.product.vendor ?? ''));
   const flashSaleActive = useFlashSaleActive();
 
   const shippingThreshold = 400;
@@ -193,6 +195,23 @@ export function CartDrawer() {
               <div className="flex items-center justify-between mb-1">
                 <span className="text-sm text-black font-semibold">FOST total</span>
                 <span className="text-base font-bold text-black">RM {fostSubtotal.toFixed(2)}</span>
+              </div>
+            )}
+            {isFostMember && hasPointsItems && (
+              <div className="my-3">
+                {pointsApplied ? (
+                  <div className="flex items-center justify-between bg-[#F16C10]/10 rounded-xl px-3 py-2">
+                    <span className="text-sm text-[#F16C10] font-semibold">{pointsApplied.pointsUsed} pts applied: – RM {pointsApplied.amount.toFixed(2)}</span>
+                    <button onClick={removePoints} className="text-xs text-neutral-500 hover:text-black underline">Remove</button>
+                  </div>
+                ) : (
+                  <button onClick={applyPoints} disabled={pointsLoading}
+                    className="w-full border border-[#F16C10] text-[#F16C10] hover:bg-[#F16C10]/5 disabled:opacity-60 font-semibold py-2.5 rounded-xl text-sm transition">
+                    {pointsLoading ? 'Applying…' : 'Use my points (Satechi / Looki items)'}
+                  </button>
+                )}
+                {pointsError && <p className="text-xs text-red-500 mt-1.5">{pointsError}</p>}
+                <p className="text-[11px] text-neutral-400 mt-1.5">Orders paid with points don't earn new points.</p>
               </div>
             )}
             <p className="text-xs text-neutral-400 mb-4">

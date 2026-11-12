@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { X, Crown, Eye, EyeOff, Check, ArrowLeft, Mail, Lock, User, Phone, Calendar } from 'lucide-react';
 import { useAuth } from './AuthContext';
 import { customerLogin, customerRegister, customerResetPassword, getCustomer } from '../data/shopify';
+import { initMember } from '../data/member';
+
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 type AuthView = 'login' | 'signup' | 'forgot' | 'forgot-sent' | 'signup-success';
 
@@ -205,7 +208,7 @@ function SignupView({ onLogin, onSuccess }: {
   onSuccess: (firstName: string, lastName: string, email: string, token: string | null) => void;
 }) {
   const [form, setForm] = useState({
-    firstName: '', lastName: '', email: '', phone: '', birthYear: '', password: '', confirm: '',
+    firstName: '', lastName: '', email: '', phone: '', birthYear: '', birthMonth: '', referralCode: '', password: '', confirm: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [agree, setAgree] = useState(false);
@@ -277,6 +280,11 @@ function SignupView({ onLogin, onSuccess }: {
         if (!tagged) {
           setErrors({ email: 'Account created, but your first-order discount is not activated yet. Please contact support before checkout.' });
         }
+        // Birthday month (for the RM20 birthday voucher) + optional referral code. Non-blocking.
+        initMember(tokenResult.token, {
+          birthMonth: form.birthMonth ? Number(form.birthMonth) : undefined,
+          referralCode: form.referralCode.trim() || undefined,
+        }).catch(error => console.error('Member perks setup failed', error));
         // Store token via onSuccess callback
         onSuccess(form.firstName, form.lastName, form.email, tokenResult.token);
       } else {
@@ -350,6 +358,24 @@ function SignupView({ onLogin, onSuccess }: {
               ))}
             </select>
           </div>
+        </FieldRow>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <FieldRow label="Birthday Month (RM20 voucher)">
+          <div className="relative">
+            <Calendar size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none" />
+            <select value={form.birthMonth} onChange={e => set('birthMonth')(e.target.value)}
+              className={`w-full border border-neutral-200 rounded-xl pl-9 pr-3 py-3 text-sm outline-none focus:border-[#F16C10] transition appearance-none ${form.birthMonth ? 'text-black' : 'text-neutral-400'}`}>
+              <option value="" disabled>Select month</option>
+              {MONTHS.map((m, i) => <option key={m} value={i + 1} className="text-black">{m}</option>)}
+            </select>
+          </div>
+        </FieldRow>
+        <FieldRow label="Referral Code (optional)">
+          <input type="text" value={form.referralCode} onChange={e => set('referralCode')(e.target.value.toUpperCase())}
+            placeholder="OST1A2B"
+            className="w-full border border-neutral-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-[#F16C10] transition text-black placeholder-neutral-400" />
         </FieldRow>
       </div>
 
