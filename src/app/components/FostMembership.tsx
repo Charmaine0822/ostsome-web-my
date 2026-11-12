@@ -1,10 +1,15 @@
 import { useProducts } from '../hooks/useProducts';
 import { CRUSHER_HANDLE } from '../data/homeFeatured';
 import { getFostPrice } from '../data/pricing';
-import { Crown, Tag, Zap, Users, Gift, CalendarHeart, Heart } from 'lucide-react';
+import { Crown, Tag, Zap, Users, Gift, CalendarHeart, Heart, ShieldCheck, Coins, Repeat, Cake, UserPlus } from 'lucide-react';
 
 const perks = [
   { icon: Tag, title: 'Member-only pricing', description: 'Unlock exclusive prices on selected products.' },
+  { icon: ShieldCheck, title: '+3 months warranty', description: 'Extra warranty for FOST members. Scan the QR card in your parcel to claim.' },
+  { icon: Coins, title: 'RM1 = 1 point', description: 'Redeem points on Satechi and Looki products.' },
+  { icon: Repeat, title: 'Trade-in upgrades', description: 'Trade in your Sennheiser MOMENTUM 4 for the MOMENTUM 5 series.' },
+  { icon: Cake, title: 'RM20 birthday voucher', description: 'Valid during your birthday month only.' },
+  { icon: UserPlus, title: 'Refer a friend: RM30 each', description: 'You get RM30, your friend gets RM30.' },
   { icon: Zap, title: 'Early access to launches', description: 'Be the first to shop new drops & restocks.' },
   { icon: Users, title: 'Product testing opportunities', description: "Test upcoming products and help shape what's next." },
   { icon: Gift, title: 'Surprise member flash sales', description: 'Enjoy surprise deals and member-only offers.' },

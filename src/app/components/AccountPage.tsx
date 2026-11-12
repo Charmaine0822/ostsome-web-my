@@ -4,7 +4,7 @@ import { getCustomer, updateCustomerProfile, saveCustomerAddress } from '../data
 import {
   ChevronLeft, Package, User, Heart, Crown, Tag, Zap, Users, Gift,
   CalendarHeart, ChevronRight, Edit2, Save, X, MapPin, Phone, Mail,
-  Lock, Check, Truck, RotateCcw, Star, ShoppingBag
+  Lock, Check, Truck, RotateCcw, Star, ShoppingBag, ShieldCheck
 } from 'lucide-react';
 import { useAuth } from './AuthContext';
 import type { Product } from '../data/products';
@@ -566,6 +566,22 @@ function SavedItems({ onSelectProduct }: { onSelectProduct: (p: Product) => void
 // ─── MEMBER PERKS ─────────────────────────────────────────────────────────────
 function MemberPerks() {
   const perks = [
+    {
+      icon: ShieldCheck,
+      title: '+3 Months Warranty',
+      desc: 'Scan the QR card in your parcel, then send your order receipt via WhatsApp to activate.',
+      status: 'Active',
+      color: 'bg-teal-50 border-teal-100',
+      iconColor: 'text-teal-500',
+    },
+    {
+      icon: Gift,
+      title: 'Points, Birthday Voucher & Referral',
+      desc: 'RM1 = 1 pt (redeem on Satechi / Looki). RM20 birthday voucher (birthday month only). Refer a friend: you both get RM30.',
+      status: 'Active',
+      color: 'bg-yellow-50 border-yellow-100',
+      iconColor: 'text-yellow-600',
+    },
     {
       icon: Tag,
       title: 'Member-only Pricing',

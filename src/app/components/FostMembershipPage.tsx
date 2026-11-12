@@ -1,7 +1,7 @@
 import { useProducts } from '../hooks/useProducts';
 import { CRUSHER_HANDLE, MTW5_HANDLE } from '../data/homeFeatured';
 import { getFostPrice } from '../data/pricing';
-import { Crown, Tag, Zap, Users, Gift, CalendarHeart, Truck, Heart, ChevronLeft, LogIn } from 'lucide-react';
+import { Crown, Tag, Zap, Users, Gift, CalendarHeart, Truck, Heart, ChevronLeft, LogIn, ShieldCheck, Coins, Cake, Repeat, UserPlus } from 'lucide-react';
 const layoutImg = '/home-featured/momentum-5.jpg';
 
 const perks = [
@@ -14,6 +14,31 @@ const perks = [
     icon: Truck,
     title: 'Free Shipping in Malaysia',
     description: 'FOST members get free shipping on every order delivered within Malaysia — no minimum spend required. Everyone else needs to spend RM 400 to qualify; members never have to.',
+  },
+  {
+    icon: ShieldCheck,
+    title: '+3 Months Warranty',
+    description: 'FOST members get an extra 3 months of warranty. Register as a member, scan the QR card in your parcel, and send us your order receipt to activate it.',
+  },
+  {
+    icon: Coins,
+    title: 'Earn Points: RM1 = 1 pt',
+    description: 'Every RM1 you spend earns 1 point. Redeem points on Satechi and Looki products.',
+  },
+  {
+    icon: Repeat,
+    title: 'Trade-In Program',
+    description: 'Upgrade your old gear, for example trade in your Sennheiser MOMENTUM 4 for the MOMENTUM 5 series.',
+  },
+  {
+    icon: Cake,
+    title: 'Birthday Voucher',
+    description: 'Get an RM20 voucher for your birthday. Valid during your birthday month only.',
+  },
+  {
+    icon: UserPlus,
+    title: 'Refer a Friend: Give RM30, Get RM30',
+    description: 'Your friend gets RM30 and so do you.',
   },
   {
     icon: Zap,
@@ -45,6 +70,10 @@ const faqs = [
   {
     q: 'Does free shipping really have no minimum?',
     a: 'Correct — for deliveries within Malaysia, FOST members get free shipping on every order, regardless of order size. Non-members still need to hit RM 400 to qualify.',
+  },
+  {
+    q: 'How do I claim the +3 months warranty?',
+    a: 'Register as a FOST member, then scan the QR card included in your order. Log in on the page, tap the WhatsApp button and send us your order receipt. We will verify and activate your extra warranty.',
   },
   {
     q: 'Does it cost anything to join?',
