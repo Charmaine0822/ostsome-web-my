@@ -5,11 +5,6 @@ import { Crown, Tag, Zap, Users, Gift, CalendarHeart, Truck, Heart, ChevronLeft,
 const layoutImg = '/home-featured/momentum-5.jpg';
 
 const perks = [
-  { icon: Gift, title: '+3 Months Warranty', description: 'Exclusively for eligible FOST members. Sign up, scan the warranty QR card and provide your receipt through WhatsApp for verification.' },
-  { icon: Tag, title: 'RM1 = 1 Point', description: 'Planned rewards: earn 1 point for every RM1 spent on eligible purchases and redeem toward Satechi or Looki offers. Redemption is not live yet.' },
-  { icon: CalendarHeart, title: 'Birthday RM20 Voucher', description: 'Planned benefit: RM20 birthday voucher, valid only during your birthday month. Launch and terms to be announced.' },
-  { icon: Users, title: 'Refer a Friend', description: 'Planned reward: RM30 for you and RM30 for your friend after qualifying conditions are met. Not yet active.' },
-  { icon: Zap, title: 'Trade-in Opportunities', description: 'Ask us about eligible upgrades, such as trading in an older Sennheiser MOMENTUM model for a newer one. Subject to quotation and availability.' },
   {
     icon: Tag,
     title: 'Exclusive FOST Pricing',
@@ -120,8 +115,6 @@ export function FostMembershipPage({ onBack, onJoin, onLogin }: FostMembershipPa
           <span className="text-black text-sm font-medium">Free to join. Always.</span>
         </div>
       </div>
-
-      <div className="max-w-5xl mx-auto px-4 pb-12"><div className="border border-orange-200 bg-orange-50 rounded-2xl p-6 text-center"><h2 className="text-xl font-bold mb-2">Register for FOST +3 Months Warranty</h2><p className="text-sm text-neutral-600 mb-4">Only for eligible FOST members. Satechi: 2-year standard warranty; other brands: generally 1 year. Submit your order details and receipt for verification.</p><a href="/warranty" className="inline-block bg-[#F16C10] text-white font-semibold rounded-xl px-6 py-3">Start Warranty Verification</a></div></div>
 
       {/* Pricing highlight strip */}
       <div className="bg-black text-white py-12">
