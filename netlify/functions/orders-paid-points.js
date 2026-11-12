@@ -7,7 +7,7 @@ const DAY = 86400000;
 
 exports.handler = async event => {
   if (event.httpMethod !== 'POST') return respond(405, { error: 'Method not allowed' });
-  const secret = process.env.SHOPIFY_WEBHOOK_SECRET || process.env.SHOPIFY_CLIENT_SECRET;
+  const secret = process.env.SHOPIFY_POINTS_WEBHOOK_SECRET || process.env.SHOPIFY_WEBHOOK_SECRET || process.env.SHOPIFY_CLIENT_SECRET;
   const raw = event.isBase64Encoded ? Buffer.from(event.body, 'base64').toString('utf8') : event.body || '';
   const sig = event.headers['x-shopify-hmac-sha256'] || '';
   const expected = crypto.createHmac('sha256', secret || '').update(raw, 'utf8').digest('base64');
