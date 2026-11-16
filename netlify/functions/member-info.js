@@ -1,12 +1,16 @@
 // Returns the logged-in member's points, referral code and vouchers. Issues the birthday voucher when due.
+// The referral code only needs the login token, so it is returned even if the points lookup fails.
 const { CFG, respond, authCustomer, getProfile, saveProfile, createVoucher, releaseHold, referralCodeFor } = require('./lib/shopify');
 
 exports.handler = async event => {
   if (event.httpMethod !== 'POST') return respond(405, { error: 'Method not allowed' });
+  let referralCode = null;
   try {
     const { customerAccessToken } = JSON.parse(event.body || '{}');
     const me = await authCustomer(customerAccessToken);
     if (!me) return respond(401, { error: 'Customer login required' });
+    referralCode = referralCodeFor(me.id);
+
     let p = await getProfile(me.id);
     if (!p) return respond(404, { error: 'Customer not found' });
     p = await releaseHold(p, false);
@@ -23,9 +27,12 @@ exports.handler = async event => {
     if (vouchers.length !== p.vouchers.length) await saveProfile(me.id, { vouchers });
 
     return respond(200, {
-      points: p.points, referralCode: referralCodeFor(me.id), birthMonth: p.birth_month,
-      holdPoints: p.hold?.pts || 0,
+      points: p.points, referralCode, birthMonth: p.birth_month, holdPoints: p.hold?.pts || 0,
       vouchers: vouchers.map(({ label, code, amount, minSpend, endsAt }) => ({ label, code, amount, minSpend, endsAt })),
     });
-  } catch (e) { console.error('member-info error:', e.message); return respond(500, { error: 'Unable to load member perks.' }); }
+  } catch (e) {
+    console.error('member-info error:', e.message);
+    if (referralCode) return respond(200, { points: null, referralCode, birthMonth: null, holdPoints: 0, vouchers: [], degraded: true });
+    return respond(500, { error: 'Unable to load rewards.' });
+  }
 };
