@@ -31,17 +31,17 @@ export function WelcomePopup({ onSeeRewards }: Props) {
 
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-[100] bg-black/40 flex items-end sm:items-center justify-center p-4" onClick={close} role="dialog" aria-modal="true" aria-label="FOST Rewards">
-      <div className="bg-white rounded-3xl w-full max-w-sm p-8 relative shadow-2xl" onClick={e => e.stopPropagation()}>
+    <div className="fixed inset-0 z-[100] bg-black/40 flex items-center justify-center px-4 pt-6 pb-28 sm:p-4" onClick={close} role="dialog" aria-modal="true" aria-label="FOST Rewards">
+      <div className="bg-white rounded-3xl w-full max-w-sm max-h-full overflow-y-auto p-6 sm:p-8 relative shadow-2xl" onClick={e => e.stopPropagation()}>
         <button onClick={close} aria-label="Close" className="absolute top-4 right-4 w-8 h-8 rounded-full text-neutral-500 hover:bg-neutral-100 hover:text-black flex items-center justify-center transition"><X size={18} /></button>
-        <h2 className="text-2xl font-semibold tracking-tight text-black pr-8">Every order earns points.</h2>
+        <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-black pr-8">Every order earns points.</h2>
         <p className="text-neutral-500 text-sm mt-2 leading-relaxed">Spend RM1, get 1 point. Collect 10 points for RM1 off selected products.</p>
-        <div className="border-t border-neutral-200 mt-6 pt-6">
+        <div className="border-t border-neutral-200 mt-5 pt-5">
           <p className="text-sm font-semibold text-black">Bring a friend</p>
           <p className="text-neutral-500 text-sm mt-1 leading-relaxed">You each get RM30 when they join with your code.</p>
         </div>
-        <button onClick={() => { close(); onSeeRewards(); }} className="mt-8 w-full bg-black hover:bg-neutral-800 text-white py-3.5 rounded-full text-sm font-semibold transition">See my rewards</button>
-        <button onClick={close} className="mt-2 w-full py-2.5 text-sm text-neutral-500 hover:text-black transition">Maybe later</button>
+        <button onClick={() => { close(); onSeeRewards(); }} className="mt-6 w-full bg-black hover:bg-neutral-800 text-white py-3.5 rounded-full text-sm font-semibold transition">See my rewards</button>
+        <button onClick={close} className="mt-1 w-full py-2 text-sm text-neutral-500 hover:text-black transition">Maybe later</button>
       </div>
     </div>
   );
