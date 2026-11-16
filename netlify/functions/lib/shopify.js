@@ -11,8 +11,8 @@ const NS = 'ostsome';
 const CFG = {
   EARN_PER_RM: 1,                          // RM1 spent = 1 point
   POINTS_PER_RM_OFF: 10,                   // 10 points = RM1 off when redeeming
-  ELIGIBLE_VENDORS: ['satechi', 'looki'],  // points can only be used on these brands
-  BIRTHDAY_RM: 20,
+  ELIGIBLE_TAG: 'points-eligible',         // points only work on products carrying this Shopify tag
+  BIRTHDAY_RM: 50,
   REFERRAL_RM: 30,
   REFERRAL_MIN_SPEND: 100,                 // min spend to use a referral voucher / to trigger the referrer's reward
   HOLD_MINUTES: 120,                       // redeemed points are held this long before returning if unused

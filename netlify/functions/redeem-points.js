@@ -1,4 +1,4 @@
-// Turns points into a single-use discount code for Satechi / Looki items in the cart.
+// Turns points into a single-use discount code for items tagged "points-eligible" in the cart.
 // Points are deducted immediately; unused points return automatically (see releaseHold).
 const { CFG, respond, admin, authCustomer, getProfile, saveProfile, createVoucher, releaseHold } = require('./lib/shopify');
 
@@ -15,17 +15,17 @@ exports.handler = async event => {
 
     const lines = (Array.isArray(items) ? items : []).filter(i => typeof i.id === 'string' && i.qty > 0).slice(0, 50);
     if (!lines.length) return respond(400, { error: 'No items to apply points to.' });
-    const d = await admin('query($ids:[ID!]!){nodes(ids:$ids){... on ProductVariant{id price product{vendor}}}}', { ids: lines.map(l => l.id) });
+    const d = await admin('query($ids:[ID!]!){nodes(ids:$ids){... on ProductVariant{id price product{tags}}}}', { ids: lines.map(l => l.id) });
     const eligible = [];
     let eligibleTotal = 0;
     for (const node of d.nodes || []) {
       if (!node?.product) continue;
-      if (!CFG.ELIGIBLE_VENDORS.some(v => node.product.vendor.toLowerCase().includes(v))) continue;
+      if (!(node.product.tags || []).includes(CFG.ELIGIBLE_TAG)) continue;
       const qty = Math.min(lines.find(l => l.id === node.id).qty, 99);
       eligible.push(node.id);
       eligibleTotal += parseFloat(node.price) * qty;
     }
-    if (!eligible.length) return respond(400, { error: 'Points can only be used on Satechi and Looki products.' });
+    if (!eligible.length) return respond(400, { error: 'Points can only be used on selected exclusive products.' });
 
     // Redeem in whole-RM steps: usable points = min(balance, 10 x eligible RM), rounded down to a multiple of 10.
     const maxPts = Math.min(p.points, Math.floor((Math.round(eligibleTotal * 100) * CFG.POINTS_PER_RM_OFF) / 100));
