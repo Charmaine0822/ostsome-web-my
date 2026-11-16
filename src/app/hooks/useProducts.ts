@@ -63,6 +63,7 @@ export function mapShopifyProduct(p: ShopifyProduct): Product {
     images: p.images.edges.map(e => e.node.url),
     bodyHtml: p.descriptionHtml,
     availableForSale,
+    tags: p.tags ?? [],
   };
 }
 

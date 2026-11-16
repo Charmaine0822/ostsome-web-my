@@ -37,6 +37,7 @@ export type ShopifyProduct = {
   handle: string;
   title: string;
   vendor: string;
+  tags: string[];
   productType: string;
   descriptionHtml: string;
   images: { edges: { node: { url: string; altText: string | null } }[] };
@@ -95,7 +96,7 @@ export async function fetchAllProducts(): Promise<ShopifyProduct[]> {
         products(first: 250, after: $cursor) {
           edges {
             node {
-              id handle title vendor productType descriptionHtml
+              id handle title vendor tags productType descriptionHtml
               images(first: 10) { edges { node { url altText } } }
               variants(first: 20) {
                 edges {
@@ -134,7 +135,7 @@ export async function fetchProductByHandle(handle: string): Promise<ShopifyProdu
   const query = `
     query GetProduct($handle: String!) @inContext(country: MY) {
       product(handle: $handle) {
-        id handle title vendor productType descriptionHtml
+        id handle title vendor tags productType descriptionHtml
         images(first: 10) { edges { node { url altText } } }
         variants(first: 20) {
           edges {

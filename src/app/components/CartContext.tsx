@@ -67,7 +67,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [pointsLoading, setPointsLoading] = useState(false);
   const [pointsError, setPointsError] = useState('');
 
-  // Reserves points for the Satechi / Looki items in the cart and returns a single-use code.
+  // Reserves points for the points-eligible items in the cart and returns a single-use code.
   const applyPoints = useCallback(async () => {
     if (!shopifyToken) return;
     setPointsLoading(true); setPointsError('');

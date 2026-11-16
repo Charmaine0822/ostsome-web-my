@@ -10,6 +10,7 @@ export type Product = {
   images: string[];
   bodyHtml: string;
   availableForSale: boolean;
+  tags?: string[];
 };
 
 export const CATEGORIES = [

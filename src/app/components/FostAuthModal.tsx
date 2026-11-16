@@ -280,7 +280,7 @@ function SignupView({ onLogin, onSuccess }: {
         if (!tagged) {
           setErrors({ email: 'Account created, but your first-order discount is not activated yet. Please contact support before checkout.' });
         }
-        // Birthday month (for the RM20 birthday voucher) + optional referral code. Non-blocking.
+        // Birthday month (for the RM50 birthday voucher) + optional referral code. Non-blocking.
         initMember(tokenResult.token, {
           birthMonth: form.birthMonth ? Number(form.birthMonth) : undefined,
           referralCode: form.referralCode.trim() || undefined,
@@ -362,7 +362,7 @@ function SignupView({ onLogin, onSuccess }: {
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <FieldRow label="Birthday Month (RM20 voucher)">
+        <FieldRow label="Birthday Month (RM50 voucher)">
           <div className="relative">
             <Calendar size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none" />
             <select value={form.birthMonth} onChange={e => set('birthMonth')(e.target.value)}

@@ -18,22 +18,22 @@ const perks = [
   {
     icon: ShieldCheck,
     title: '+3 Months Warranty',
-    description: 'FOST members get an extra 3 months of warranty. Register as a member, scan the QR card in your parcel, and send us your order receipt to activate it.',
+    description: 'FOST members get an extra 3 months of warranty on Sennheiser products. Scan the QR card in your parcel, log in, and submit your warranty details online.',
   },
   {
     icon: Coins,
     title: 'Earn Points: RM1 = 1 pt',
-    description: 'Every RM1 you spend earns 1 point. Every 10 points = RM1 off Satechi and Looki products.',
+    description: 'Every RM1 you spend earns 1 point. Every 10 points = RM1 off selected exclusive products.',
   },
   {
     icon: Repeat,
     title: 'Trade-In Program',
-    description: 'Upgrade your old gear, for example trade in your Sennheiser MOMENTUM 4 for the MOMENTUM 5 series.',
+    description: 'Upgrade your old gear, trade in your Sennheiser MOMENTUM 4 for MOMENTUM 5, or MOMENTUM True Wireless 4 for MOMENTUM True Wireless 5.',
   },
   {
     icon: Cake,
     title: 'Birthday Voucher',
-    description: 'Get an RM20 voucher for your birthday. Valid during your birthday month only.',
+    description: 'Get an RM50 voucher for your birthday. Valid during your birthday month only.',
   },
   {
     icon: UserPlus,
@@ -73,7 +73,7 @@ const faqs = [
   },
   {
     q: 'How do I claim the +3 months warranty?',
-    a: 'Register as a FOST member, then scan the QR card included in your order. Log in on the page, tap the WhatsApp button and send us your order receipt. We will verify and activate your extra warranty.',
+    a: 'The extra 3 months applies to Sennheiser products. Register as a FOST member, scan the QR card included in your order, log in, and fill in the warranty form. Our team will follow up with you.',
   },
   {
     q: 'Does it cost anything to join?',

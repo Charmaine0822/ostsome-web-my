@@ -9,7 +9,7 @@ export function CartDrawer() {
     goToShopifyCheckout, checkoutLoading, isFostMember, fostSubtotal, fostSavings,
     pointsApplied, pointsLoading, pointsError, applyPoints, removePoints,
   } = useCart();
-  const hasPointsItems = items.some(i => /satechi|looki/i.test(i.product.vendor ?? ''));
+  const hasPointsItems = items.some(i => i.product.tags?.includes('points-eligible'));
   const flashSaleActive = useFlashSaleActive();
 
   const shippingThreshold = 400;
@@ -207,7 +207,7 @@ export function CartDrawer() {
                 ) : (
                   <button onClick={applyPoints} disabled={pointsLoading}
                     className="w-full border border-[#F16C10] text-[#F16C10] hover:bg-[#F16C10]/5 disabled:opacity-60 font-semibold py-2.5 rounded-xl text-sm transition">
-                    {pointsLoading ? 'Applying…' : 'Use my points (Satechi / Looki items)'}
+                    {pointsLoading ? 'Applying…' : 'Use my points (selected products)'}
                   </button>
                 )}
                 {pointsError && <p className="text-xs text-red-500 mt-1.5">{pointsError}</p>}

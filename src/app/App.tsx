@@ -16,7 +16,8 @@ import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { FostMembership } from './components/FostMembership';
 import { FostMembershipPage } from './components/FostMembershipPage';
 import { WarrantyPage } from './components/WarrantyPage';
-import { PointsBanner } from './components/PointsBanner';
+import { WelcomePopup } from './components/WelcomePopup';
+import { PointsProductsPage } from './components/PointsProductsPage';
 import { ProductListing } from './components/ProductListing';
 import { ProductDetail } from './components/ProductDetail';
 import { BrandsPage } from './components/BrandsPage';
@@ -37,7 +38,7 @@ import type { Tab as AccountTab } from './components/AccountPage';
 import { useProducts } from './hooks/useProducts';
 import type { Product } from './data/products';
 
-type Page = 'home' | 'products' | 'product-detail' | 'brands' | 'brand-detail' | 'nav-category' | 'checkout' | 'account' | 'admin' | 'launch-exclusive' | 'one-season-off' | 'fost-membership' | 'warranty' | 'study-mode' | 'travel-ready' | 'smart-home';
+type Page = 'home' | 'products' | 'product-detail' | 'brands' | 'brand-detail' | 'nav-category' | 'checkout' | 'account' | 'admin' | 'launch-exclusive' | 'one-season-off' | 'fost-membership' | 'warranty' | 'points-products' | 'study-mode' | 'travel-ready' | 'smart-home';
 
 // Everything needed to fully restore a screen — this is what gets stored in
 // browser history so the back/forward buttons can actually move between
@@ -77,6 +78,8 @@ function buildUrl(state: NavState): string {
       return '/fost';
     case 'warranty':
       return '/warranty';
+    case 'points-products':
+      return '/points-products';
     case 'study-mode':
       return '/study-mode';
     case 'travel-ready':
@@ -270,6 +273,8 @@ function AppInner() {
       goTo({ page: 'one-season-off' }, { replace: true, scroll: false });
     } else if (path === '/fost') {
       goTo({ page: 'fost-membership' }, { replace: true, scroll: false });
+    } else if (path === '/points-products') {
+      goTo({ page: 'points-products' }, { replace: true, scroll: false });
     } else if (path === '/warranty') {
       goTo({ page: 'warranty' }, { replace: true, scroll: false });
     } else if (path === '/study-mode') {
@@ -333,6 +338,10 @@ function AppInner() {
         />
       )}
 
+      <WelcomePopup
+        onSeeProducts={() => goTo({ page: 'points-products' })}
+        onJoin={() => setAuthModal({ open: true, view: 'signup' })}
+      />
       <CartDrawer />
       {showHeader && <FloatingWhatsApp />}
 
@@ -362,10 +371,6 @@ function AppInner() {
           <Hero
             products={liveProducts}
             onSelectProduct={handleSelectProduct}
-          />
-          <PointsBanner
-            onJoin={() => setAuthModal({ open: true, view: 'signup' })}
-            onViewPoints={() => goTo({ page: 'account', accountTab: 'perks' })}
           />
           <FridayFlashDeals
             products={flashDealProducts}
@@ -460,6 +465,14 @@ function AppInner() {
       )}
 
       {page === 'admin' && <AdminDashboard />}
+
+      {page === 'points-products' && (
+        <PointsProductsPage
+          onBack={() => goTo({ page: 'home' })}
+          onSelectProduct={handleSelectProduct}
+          onJoinFost={() => setAuthModal({ open: true, view: 'signup' })}
+        />
+      )}
 
       {page === 'launch-exclusive' && (
         <LaunchExclusivePage
