@@ -18,6 +18,8 @@ import { FostMembershipPage } from './components/FostMembershipPage';
 import { WarrantyPage } from './components/WarrantyPage';
 import { WelcomePopup } from './components/WelcomePopup';
 import { PointsProductsPage } from './components/PointsProductsPage';
+import { RewardsPage } from './components/RewardsPage';
+import { RewardsPill } from './components/RewardsPill';
 import { ProductListing } from './components/ProductListing';
 import { ProductDetail } from './components/ProductDetail';
 import { BrandsPage } from './components/BrandsPage';
@@ -38,7 +40,7 @@ import type { Tab as AccountTab } from './components/AccountPage';
 import { useProducts } from './hooks/useProducts';
 import type { Product } from './data/products';
 
-type Page = 'home' | 'products' | 'product-detail' | 'brands' | 'brand-detail' | 'nav-category' | 'checkout' | 'account' | 'admin' | 'launch-exclusive' | 'one-season-off' | 'fost-membership' | 'warranty' | 'points-products' | 'study-mode' | 'travel-ready' | 'smart-home';
+type Page = 'home' | 'products' | 'product-detail' | 'brands' | 'brand-detail' | 'nav-category' | 'checkout' | 'account' | 'admin' | 'launch-exclusive' | 'one-season-off' | 'fost-membership' | 'warranty' | 'points-products' | 'rewards' | 'study-mode' | 'travel-ready' | 'smart-home';
 
 // Everything needed to fully restore a screen — this is what gets stored in
 // browser history so the back/forward buttons can actually move between
@@ -80,6 +82,8 @@ function buildUrl(state: NavState): string {
       return '/warranty';
     case 'points-products':
       return '/points-products';
+    case 'rewards':
+      return '/rewards';
     case 'study-mode':
       return '/study-mode';
     case 'travel-ready':
@@ -273,6 +277,8 @@ function AppInner() {
       goTo({ page: 'one-season-off' }, { replace: true, scroll: false });
     } else if (path === '/fost') {
       goTo({ page: 'fost-membership' }, { replace: true, scroll: false });
+    } else if (path === '/rewards') {
+      goTo({ page: 'rewards' }, { replace: true, scroll: false });
     } else if (path === '/points-products') {
       goTo({ page: 'points-products' }, { replace: true, scroll: false });
     } else if (path === '/warranty') {
@@ -338,10 +344,8 @@ function AppInner() {
         />
       )}
 
-      <WelcomePopup
-        onSeeProducts={() => goTo({ page: 'points-products' })}
-        onJoin={() => setAuthModal({ open: true, view: 'signup' })}
-      />
+      <WelcomePopup onSeeRewards={() => goTo({ page: 'rewards' })} />
+      {showHeader && page !== 'rewards' && page !== 'warranty' && <RewardsPill onClick={() => goTo({ page: 'rewards' })} />}
       <CartDrawer />
       {showHeader && <FloatingWhatsApp />}
 
@@ -465,6 +469,15 @@ function AppInner() {
       )}
 
       {page === 'admin' && <AdminDashboard />}
+
+      {page === 'rewards' && (
+        <RewardsPage
+          onBack={() => goTo({ page: 'home' })}
+          onShopWithPoints={() => goTo({ page: 'points-products' })}
+          onJoin={() => setAuthModal({ open: true, view: 'signup' })}
+          onLogin={() => setAuthModal({ open: true, view: 'login' })}
+        />
+      )}
 
       {page === 'points-products' && (
         <PointsProductsPage

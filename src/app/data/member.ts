@@ -1,7 +1,7 @@
 // Client for the Netlify member functions (points, referral code, vouchers).
 export type MemberVoucher = { label: string; code: string; amount: number; minSpend?: number; endsAt: string };
 export type MemberInfo = {
-  points: number; holdPoints: number; referralCode: string; birthMonth: number | null; vouchers: MemberVoucher[];
+  points: number | null; holdPoints: number; degraded?: boolean; referralCode: string; birthMonth: number | null; vouchers: MemberVoucher[];
 };
 
 async function post<T>(fn: string, body: object): Promise<T> {

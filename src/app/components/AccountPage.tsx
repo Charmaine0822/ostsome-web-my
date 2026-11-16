@@ -9,8 +9,6 @@ import {
 import { useAuth } from './AuthContext';
 import type { Product } from '../data/products';
 import { getFostPrice } from '../data/pricing';
-import { fetchMember } from '../data/member';
-import type { MemberInfo } from '../data/member';
 
 export type Tab = 'orders' | 'profile' | 'saved' | 'perks';
 
@@ -567,41 +565,14 @@ function SavedItems({ onSelectProduct }: { onSelectProduct: (p: Product) => void
 
 // ─── MEMBER PERKS ─────────────────────────────────────────────────────────────
 function MemberRewards() {
-  const { shopifyToken } = useAuth();
-  const [info, setInfo] = useState<MemberInfo | null>(null);
-  const [failed, setFailed] = useState(false);
-  const [copied, setCopied] = useState('');
-  useEffect(() => {
-    if (!shopifyToken) return;
-    fetchMember(shopifyToken).then(setInfo).catch(() => setFailed(true));
-  }, [shopifyToken]);
-  const copy = (text: string) => { navigator.clipboard?.writeText(text); setCopied(text); setTimeout(() => setCopied(''), 1500); };
-  if (failed) return null;
-  if (!info) return <div className="h-24 rounded-2xl bg-neutral-50 animate-pulse" />;
   return (
-    <div className="flex flex-col gap-3">
-      <div className="rounded-2xl border border-neutral-200 p-5">
-        <p className="text-xs text-neutral-500 mb-1">Your points</p>
-        <p className="text-3xl font-bold text-black">{info.points.toLocaleString()} <span className="text-sm font-semibold text-neutral-400">pts</span></p>
-        <p className="text-xs text-neutral-400 mt-1">RM1 = 1 pt. 10 pts = RM1 off selected exclusive products, redeem at the cart.{info.holdPoints > 0 && ` ${info.holdPoints} pts reserved in a checkout.`}</p>
+    <a href="/rewards" className="flex items-center justify-between gap-4 rounded-2xl border border-neutral-200 hover:border-black transition-colors p-5">
+      <div>
+        <p className="text-sm font-semibold text-black">Your points, referral code and vouchers</p>
+        <p className="text-xs text-neutral-500 mt-0.5">See your balance, invite a friend, and use your vouchers.</p>
       </div>
-      <div className="rounded-2xl border border-neutral-200 p-5">
-        <p className="text-xs text-neutral-500 mb-1">Your referral code: friends get RM30, you get RM30</p>
-        <div className="flex items-center gap-3">
-          <span className="text-xl font-bold tracking-wider text-[#F16C10]">{info.referralCode}</span>
-          <button onClick={() => copy(info.referralCode)} className="text-xs border border-neutral-200 rounded-lg px-3 py-1.5 hover:border-neutral-400">{copied === info.referralCode ? 'Copied' : 'Copy'}</button>
-        </div>
-      </div>
-      {info.vouchers.map(v => (
-        <div key={v.code} className="rounded-2xl border border-[#F16C10]/30 bg-[#F16C10]/5 p-5 flex items-center justify-between gap-3">
-          <div>
-            <p className="text-sm font-bold text-black">{v.label}: RM {v.amount}</p>
-            <p className="text-xs text-neutral-500">Code {v.code}{v.minSpend ? ` · min spend RM ${v.minSpend}` : ''} · valid until {new Date(v.endsAt).toLocaleDateString('en-GB')}</p>
-          </div>
-          <button onClick={() => copy(v.code)} className="text-xs border border-neutral-300 rounded-lg px-3 py-1.5 bg-white hover:border-neutral-500 shrink-0">{copied === v.code ? 'Copied' : 'Copy'}</button>
-        </div>
-      ))}
-    </div>
+      <span className="text-sm font-semibold text-black shrink-0">Open rewards</span>
+    </a>
   );
 }
 
