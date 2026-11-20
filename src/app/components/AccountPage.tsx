@@ -9,8 +9,9 @@ import {
 import { useAuth } from './AuthContext';
 import type { Product } from '../data/products';
 import { getFostPrice } from '../data/pricing';
+import { MyWarranty } from './MyWarranty';
 
-export type Tab = 'orders' | 'profile' | 'saved' | 'perks';
+export type Tab = 'orders' | 'profile' | 'saved' | 'perks' | 'warranty';
 
 type AccountPageProps = {
   onBack: () => void;
@@ -691,6 +692,7 @@ export function AccountPage({ onBack, onSelectProduct, initialTab = 'orders' }: 
     { key: 'orders',  label: 'My Orders',     icon: Package },
     { key: 'profile', label: 'My Profile',    icon: User },
     { key: 'perks',   label: 'Member Perks',  icon: Crown },
+    { key: 'warranty', label: 'My Warranty',  icon: ShieldCheck },
   ];
 
   return (
@@ -744,6 +746,7 @@ export function AccountPage({ onBack, onSelectProduct, initialTab = 'orders' }: 
         {tab === 'orders'  && <MyOrders />}
         {tab === 'profile' && <MyProfile />}
         {tab === 'perks'   && <MemberPerks />}
+        {tab === 'warranty' && <MyWarranty />}
       </div>
     </div>
   );

@@ -512,6 +512,7 @@ function AppInner() {
 
       {page === 'warranty' && (
         <WarrantyPage
+          onViewClaims={() => goTo({ page: 'account', accountTab: 'warranty' })}
           onBack={() => goTo({ page: 'home' })}
           onJoin={() => setAuthModal({ open: true, view: 'signup' })}
           onLogin={() => setAuthModal({ open: true, view: 'login' })}

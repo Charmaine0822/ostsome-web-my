@@ -1,30 +1,13 @@
 import { useState } from 'react';
 import { ShieldCheck, Crown, LogIn, ChevronLeft, Check, Upload, Clock } from 'lucide-react';
 import { useAuth } from './AuthContext';
+import { warrantyPost as post, compressImage } from '../data/warranty';
 
-type WarrantyPageProps = { onBack?: () => void; onJoin?: () => void; onLogin?: () => void };
-
-async function post(body: object) {
-  const res = await fetch('/.netlify/functions/warranty-submit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error || 'Something went wrong. Please try again.');
-  return data as { claimId: string };
-}
-
-// Shrinks the invoice screenshot so it uploads quickly on mobile data.
-async function compressImage(file: File) {
-  const bmp = await createImageBitmap(file);
-  const scale = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
-  const canvas = document.createElement('canvas');
-  canvas.width = Math.round(bmp.width * scale);
-  canvas.height = Math.round(bmp.height * scale);
-  canvas.getContext('2d')!.drawImage(bmp, 0, 0, canvas.width, canvas.height);
-  return { mime: 'image/jpeg', data: canvas.toDataURL('image/jpeg', 0.75).split(',')[1] };
-}
+type WarrantyPageProps = { onBack?: () => void; onJoin?: () => void; onLogin?: () => void; onViewClaims?: () => void };
 
 const inputCls = 'w-full border border-neutral-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-[#F16C10] transition text-black bg-white';
 
-export function WarrantyPage({ onBack, onJoin, onLogin }: WarrantyPageProps) {
+export function WarrantyPage({ onBack, onJoin, onLogin, onViewClaims }: WarrantyPageProps) {
   const { user, shopifyToken } = useAuth();
   const [f, setF] = useState({ orderId: '', name: user ? `${user.firstName} ${user.lastName}`.trim() : '', phone: '', address: '', issue: '' });
   const [file, setFile] = useState<File | null>(null);
@@ -49,7 +32,7 @@ export function WarrantyPage({ onBack, onJoin, onLogin }: WarrantyPageProps) {
 
   const sendTracking = async () => {
     setError(''); setBusy(true);
-    try { await post({ customerAccessToken: shopifyToken, action: 'tracking', orderId: f.orderId, trackingNumber: tracking }); setTrackingDone(true); }
+    try { await post({ customerAccessToken: shopifyToken, action: 'tracking', claimId, orderId: f.orderId, trackingNumber: tracking }); setTrackingDone(true); }
     catch (e) { setError(e instanceof Error ? e.message : 'Something went wrong.'); }
     setBusy(false);
   };
@@ -85,6 +68,7 @@ export function WarrantyPage({ onBack, onJoin, onLogin }: WarrantyPageProps) {
             <p className="flex items-center gap-2 text-green-600 font-bold mb-2"><Check size={18} /> Request received</p>
             <p className="text-sm text-neutral-600 mb-1">Your claim number is <span className="font-bold text-black">{claimId}</span>. Our team will contact you.</p>
             <p className="text-sm text-neutral-500 flex items-center gap-1.5 mb-6"><Clock size={14} /> Processing time: approximately 1–2 weeks, depending on the situation.</p>
+            <button onClick={onViewClaims} className="text-sm font-semibold text-[#F16C10] hover:underline mb-6">View my warranty requests</button>
             <div className="border-t border-neutral-200 pt-5">
               <p className="text-black font-bold text-sm mb-1">Shipped out your item?</p>
               <p className="text-neutral-500 text-sm mb-3">Please send us the tracking number after you have shipped it out.</p>
@@ -100,6 +84,7 @@ export function WarrantyPage({ onBack, onJoin, onLogin }: WarrantyPageProps) {
         ) : (
           <div className="bg-neutral-50 border border-neutral-100 rounded-2xl p-6 grid gap-4">
             <p className="flex items-center gap-2 text-green-600 text-sm font-bold"><Check size={16} /> Logged in as {user.email}</p>
+            <button onClick={onViewClaims} className="text-left text-sm font-semibold text-[#F16C10] hover:underline">View my previous warranty requests</button>
             <label className="text-sm font-semibold">Order ID *<input className={`${inputCls} mt-1 font-normal`} value={f.orderId} onChange={set('orderId')} placeholder="Shopee / Lazada / website order ID" /></label>
             <label className="text-sm font-semibold">Name *<input className={`${inputCls} mt-1 font-normal`} value={f.name} onChange={set('name')} /></label>
             <label className="text-sm font-semibold">Contact Number *<input className={`${inputCls} mt-1 font-normal`} value={f.phone} onChange={set('phone')} inputMode="tel" placeholder="e.g. 012-3456789" /></label>
