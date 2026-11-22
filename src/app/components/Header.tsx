@@ -11,6 +11,7 @@ type HeaderProps = {
   onNavToProducts?: () => void;
   onNavToHome?: () => void;
   onNavToBrands?: () => void;
+  onNavToSeasonOffClearance?: () => void;
   onNavToCategory?: (category: string) => void;
   onSelectProduct?: (product: Product) => void;
   onSearchNavigate?: (query: string) => void;
@@ -27,7 +28,7 @@ const announcementMessages = [
   "🔥 Latest of the Latest",
 ];
 
-export function Header({ onNavToProducts, onNavToHome, onNavToBrands, onNavToCategory, onSelectProduct, onSearchNavigate, onNavToLogin, onNavToAccount, onLogout, currentPage, currentNavCategory }: HeaderProps) {
+export function Header({ onNavToProducts, onNavToHome, onNavToBrands, onNavToSeasonOffClearance, onNavToCategory, onSelectProduct, onSearchNavigate, onNavToLogin, onNavToAccount, onLogout, currentPage, currentNavCategory }: HeaderProps) {
   const navRef = useRef<HTMLDivElement>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -386,6 +387,12 @@ export function Header({ onNavToProducts, onNavToHome, onNavToBrands, onNavToCat
                 className={`whitespace-nowrap hover:text-[#F16C10] transition-colors ${currentPage === 'home' ? 'text-[#F16C10] font-semibold' : ''}`}
               >
                 New & Trending
+              </button>
+              <button
+                onClick={onNavToSeasonOffClearance}
+                className={`whitespace-nowrap hover:text-[#F16C10] transition-colors ${currentPage === 'season-off-clearance' ? 'text-[#F16C10] font-semibold' : ''}`}
+              >
+                Season Off Clearance Price
               </button>
               <button
                 onClick={onNavToProducts}

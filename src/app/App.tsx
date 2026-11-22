@@ -16,6 +16,7 @@ import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { FostMembership } from './components/FostMembership';
 import { FostMembershipPage } from './components/FostMembershipPage';
 import { WarrantyPage } from './components/WarrantyPage';
+import { SeasonOffClearancePage } from './components/SeasonOffClearancePage';
 import { WelcomePopup } from './components/WelcomePopup';
 import { PointsProductsPage } from './components/PointsProductsPage';
 import { RewardsPage } from './components/RewardsPage';
@@ -40,7 +41,7 @@ import type { Tab as AccountTab } from './components/AccountPage';
 import { useProducts } from './hooks/useProducts';
 import type { Product } from './data/products';
 
-type Page = 'home' | 'products' | 'product-detail' | 'brands' | 'brand-detail' | 'nav-category' | 'checkout' | 'account' | 'admin' | 'launch-exclusive' | 'one-season-off' | 'fost-membership' | 'warranty' | 'points-products' | 'rewards' | 'study-mode' | 'travel-ready' | 'smart-home';
+type Page = 'home' | 'products' | 'product-detail' | 'brands' | 'brand-detail' | 'nav-category' | 'checkout' | 'account' | 'admin' | 'launch-exclusive' | 'one-season-off' | 'season-off-clearance' | 'fost-membership' | 'warranty' | 'points-products' | 'rewards' | 'study-mode' | 'travel-ready' | 'smart-home';
 
 // Everything needed to fully restore a screen — this is what gets stored in
 // browser history so the back/forward buttons can actually move between
@@ -76,6 +77,8 @@ function buildUrl(state: NavState): string {
       return '/launch';
     case 'one-season-off':
       return '/clearance';
+    case 'season-off-clearance':
+      return '/season-off-clearance';
     case 'fost-membership':
       return '/fost';
     case 'warranty':
@@ -275,6 +278,8 @@ function AppInner() {
       goTo({ page: 'launch-exclusive' }, { replace: true, scroll: false });
     } else if (path === '/clearance') {
       goTo({ page: 'one-season-off' }, { replace: true, scroll: false });
+    } else if (path === '/season-off-clearance') {
+      goTo({ page: 'season-off-clearance' }, { replace: true, scroll: false });
     } else if (path === '/fost') {
       goTo({ page: 'fost-membership' }, { replace: true, scroll: false });
     } else if (path === '/rewards') {
@@ -318,6 +323,7 @@ function AppInner() {
   const handleNavToProducts = () => goTo({ page: 'products', search: '' });
   const handleNavToHome = () => goTo({ page: 'home' });
   const handleNavToBrands = () => goTo({ page: 'brands' });
+  const handleNavToSeasonOffClearance = () => goTo({ page: 'season-off-clearance' });
 
   const handleSearchNavigate = (query: string) => {
     goTo({ page: 'products', search: query });
@@ -354,6 +360,7 @@ function AppInner() {
           onNavToProducts={handleNavToProducts}
           onNavToHome={handleNavToHome}
           onNavToBrands={handleNavToBrands}
+          onNavToSeasonOffClearance={handleNavToSeasonOffClearance}
           onNavToCategory={handleNavToNavCategory}
           onSelectProduct={handleSelectProduct}
           onSearchNavigate={handleSearchNavigate}
@@ -497,6 +504,13 @@ function AppInner() {
 
       {page === 'one-season-off' && (
         <OneSeasonOffPage
+          onBack={() => goTo({ page: 'home' })}
+          onSelectProduct={handleSelectProduct}
+        />
+      )}
+
+      {page === 'season-off-clearance' && (
+        <SeasonOffClearancePage
           onBack={() => goTo({ page: 'home' })}
           onSelectProduct={handleSelectProduct}
         />

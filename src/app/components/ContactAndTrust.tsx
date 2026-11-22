@@ -135,7 +135,7 @@ export function ContactAndTrust() {
             {activePolicy === 'warranty' ? (
               <div className="space-y-4 text-sm leading-relaxed pr-2">
                 <h2 id="policy-title" className="text-xl font-bold text-black pr-10">Warranty Policy</h2>
-                <p>All products come with a <strong>1-year warranty</strong>, except <strong>Satechi products, which come with a 2-year warranty</strong>.</p>
+                <p>All products come with a <strong>1-year warranty</strong>, except <strong>Satechi products, which come with a 2-year warranty</strong>. FOST members get an additional <strong>3 months extended warranty</strong> on all brands (1 year + 3 months; Satechi 2 years + 3 months). Warranty is counted from the <strong>order date</strong>.</p>
                 <p>Please <a className="font-semibold text-[#F16C10] underline" target="_blank" rel="noopener noreferrer" href="https://wa.me/60108870937?text=Hi%2C%20I%20would%20like%20to%20enquire%20about%20a%20warranty%20claim.">contact us via WhatsApp</a> before sending or bringing in an item for a warranty claim.</p>
                 <h3 className="font-bold text-black">Warranty Method (Please choose one)</h3>
                 <ol className="list-decimal pl-5 space-y-2"><li><strong>Self-delivery via courier</strong> — Shipping fees to be borne by buyer.</li><li><strong>Walk-in to our office</strong> — Monday–Friday, 9:30 AM–4:00 PM (except public holidays).</li></ol>

@@ -581,8 +581,8 @@ function MemberPerks() {
   const perks = [
     {
       icon: ShieldCheck,
-      title: '+3 Months Warranty',
-      desc: 'Extra 3 months on Sennheiser products. Scan the QR card in your parcel and submit the warranty form.',
+      title: '+3 Months Extended Warranty',
+      desc: 'Extra 3 months on all brands: 1 year + 3 months (Satechi: 2 years + 3 months), counted from your order date. Scan the QR card in your parcel and submit the extended warranty form.',
       status: 'Active',
       color: 'bg-teal-50 border-teal-100',
       iconColor: 'text-teal-500',
@@ -692,7 +692,7 @@ export function AccountPage({ onBack, onSelectProduct, initialTab = 'orders' }: 
     { key: 'orders',  label: 'My Orders',     icon: Package },
     { key: 'profile', label: 'My Profile',    icon: User },
     { key: 'perks',   label: 'Member Perks',  icon: Crown },
-    { key: 'warranty', label: 'My Warranty',  icon: ShieldCheck },
+    { key: 'warranty', label: 'My Extended Warranty',  icon: ShieldCheck },
   ];
 
   return (

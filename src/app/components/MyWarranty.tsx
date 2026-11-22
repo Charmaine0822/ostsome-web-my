@@ -112,7 +112,7 @@ export function MyWarranty() {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-base font-bold text-black">My warranty requests</h2>
+        <h2 className="text-base font-bold text-black">My extended warranty requests</h2>
         <a href="/warranty" className="text-sm font-semibold text-[#F16C10] hover:underline">New request</a>
       </div>
       {error ? (
@@ -120,7 +120,7 @@ export function MyWarranty() {
       ) : claims === null ? (
         <p className="text-sm text-neutral-400">Loading…</p>
       ) : claims.length === 0 ? (
-        <p className="text-sm text-neutral-500">You haven’t submitted any warranty requests yet.</p>
+        <p className="text-sm text-neutral-500">You haven’t submitted any extended warranty requests yet.</p>
       ) : (
         <div className="grid gap-4">
           {claims.map(c => <ClaimCard key={c.claimId} claim={c} token={shopifyToken!} onChanged={load} />)}

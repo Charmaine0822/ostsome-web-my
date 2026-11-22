@@ -5,7 +5,7 @@ import { Crown, Tag, Zap, Users, Gift, CalendarHeart, Heart, ShieldCheck, Coins,
 
 const perks = [
   { icon: Tag, title: 'Member-only pricing', description: 'Unlock exclusive prices on selected products.' },
-  { icon: ShieldCheck, title: '+3 months warranty', description: 'FOST members get an extra 3 months warranty on Sennheiser products. Scan the QR card in your parcel to claim.' },
+  { icon: ShieldCheck, title: '+3 months extended warranty', description: 'FOST members get an extra 3 months of extended warranty on all brands (1 year + 3 months; Satechi 2 years + 3 months), from order date. Scan the QR card in your parcel to claim.' },
   { icon: Coins, title: 'RM1 = 1 point', description: 'Every 10 points = RM1 off selected exclusive products.' },
   { icon: Repeat, title: 'Trade-in upgrades', description: 'Trade in MOMENTUM 4 for MOMENTUM 5, or MOMENTUM True Wireless 4 for True Wireless 5.' },
   { icon: Cake, title: 'RM50 birthday voucher', description: 'Valid during your birthday month only.' },

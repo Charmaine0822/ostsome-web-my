@@ -912,7 +912,7 @@ export function ProductDetail({ product, onBack, onCheckout }: ProductDetailProp
             <div className="grid grid-cols-3 gap-3 mb-8">
               {[
                 { icon: Truck, label: 'Free shipping', sub: 'Orders over RM 400' },
-                { icon: Shield, label: 'Warranty', sub: '1-year coverage' },
+                { icon: Shield, label: 'Warranty', sub: product.vendor?.toLowerCase() === 'satechi' ? '2 years + 3 months extended' : '1 year + 3 months extended' },
                 { icon: RefreshCw, label: 'Easy returns', sub: '30-day policy' },
               ].map(({ icon: Icon, label, sub }) => (
                 <div key={label} className="flex flex-col items-center text-center p-3 bg-neutral-50 rounded-xl">

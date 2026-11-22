@@ -17,8 +17,8 @@ const perks = [
   },
   {
     icon: ShieldCheck,
-    title: '+3 Months Warranty',
-    description: 'FOST members get an extra 3 months of warranty on Sennheiser products. Scan the QR card in your parcel, log in, and submit your warranty details online.',
+    title: '+3 Months Extended Warranty',
+    description: 'FOST members get an extra 3 months of extended warranty on all brands: 1 year + 3 months (Satechi: 2 years + 3 months), counted from your order date. Scan the QR card in your parcel, log in, and submit your extended warranty details online.',
   },
   {
     icon: Coins,
@@ -72,8 +72,8 @@ const faqs = [
     a: 'Correct — for deliveries within Malaysia, FOST members get free shipping on every order, regardless of order size. Non-members still need to hit RM 400 to qualify.',
   },
   {
-    q: 'How do I claim the +3 months warranty?',
-    a: 'The extra 3 months applies to Sennheiser products. Register as a FOST member, scan the QR card included in your order, log in, and fill in the warranty form. Our team will follow up with you.',
+    q: 'How do I claim the +3 months extended warranty?',
+    a: 'The extra 3 months applies to all brands (1 year + 3 months; Satechi 2 years + 3 months), counted from your order date. Register as a FOST member, scan the QR card included in your order, log in, and fill in the extended warranty form. Our team will follow up with you.',
   },
   {
     q: 'Does it cost anything to join?',
