@@ -7,6 +7,23 @@ type WarrantyPageProps = { onBack?: () => void; onJoin?: () => void; onLogin?: (
 
 const inputCls = 'w-full border border-neutral-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-[#F16C10] transition text-black bg-white';
 
+function WarrantyOfficeInfo() {
+  return (
+    <div className="bg-white border border-neutral-200 rounded-2xl p-5 text-sm text-neutral-700 leading-relaxed">
+      <p className="text-black font-bold mb-3">Where to send your item</p>
+      <p className="font-semibold text-black mb-1">Option 1: Self-delivery via courier</p>
+      <p className="text-neutral-500 mb-3">Shipping fees are to be borne by the buyer. Please courier the malfunctioning item to our office for quality check / warranty claim after submitting your request.</p>
+      <p className="font-semibold text-black mb-1">Option 2: Walk-in to our office</p>
+      <p className="text-neutral-500 mb-3">Monday – Friday, 9:30 AM – 4:00 PM (except public holidays). Please bring the malfunctioning product and a screenshot of your Shopee invoice (if available). Make sure the address on the invoice matches your return address. Kindly inform our operations team of the issue on arrival.</p>
+      <div className="border-t border-neutral-100 pt-3">
+        <p className="font-semibold text-black">StreamCast Asia</p>
+        <p>No. 93-1, Block H, Jaya One,<br />No. 72A, Jalan Universiti,<br />Section 13, 46200 Petaling Jaya, Selangor</p>
+        <p className="mt-2"><span className="font-semibold text-black">Office Hotline:</span> +603-7931 5927<br /><span className="font-semibold text-black">Operation Hours:</span> 9:30 AM – 4:00 PM (Mon–Fri, except public holidays)</p>
+      </div>
+    </div>
+  );
+}
+
 export function WarrantyPage({ onBack, onJoin, onLogin, onViewClaims }: WarrantyPageProps) {
   const { user, shopifyToken } = useAuth();
   const [f, setF] = useState({ orderId: '', name: user ? `${user.firstName} ${user.lastName}`.trim() : '', phone: '', address: '', issue: '' });
@@ -69,6 +86,7 @@ export function WarrantyPage({ onBack, onJoin, onLogin, onViewClaims }: Warranty
             <p className="text-sm text-neutral-600 mb-1">Your claim number is <span className="font-bold text-black">{claimId}</span>. Our team will contact you.</p>
             <p className="text-sm text-neutral-500 flex items-center gap-1.5 mb-6"><Clock size={14} /> Processing time: approximately 1–2 weeks, depending on the situation.</p>
             <button onClick={onViewClaims} className="text-sm font-semibold text-[#F16C10] hover:underline mb-6">View my extended warranty requests</button>
+            <div className="mb-6"><WarrantyOfficeInfo /></div>
             <div className="border-t border-neutral-200 pt-5">
               <p className="text-black font-bold text-sm mb-1">Shipped out your item?</p>
               <p className="text-neutral-500 text-sm mb-3">Please send us the tracking number after you have shipped it out.</p>
@@ -100,6 +118,7 @@ export function WarrantyPage({ onBack, onJoin, onLogin, onViewClaims }: Warranty
             {error && <p className="text-red-500 text-sm">{error}</p>}
             <button onClick={submit} disabled={busy} className="bg-[#F16C10] hover:bg-[#d65f0e] disabled:opacity-60 text-white px-6 py-3.5 rounded-xl font-bold text-sm transition">{busy ? 'Submitting…' : 'Submit extended warranty request'}</button>
             <p className="text-xs text-neutral-500">Please send us the tracking number after you have shipped out the item. Warranty processing time: approximately 1–2 weeks, depending on the situation.</p>
+            <WarrantyOfficeInfo />
           </div>
         )}
       </div>

@@ -141,6 +141,8 @@ export function ContactAndTrust() {
                 <ol className="list-decimal pl-5 space-y-2"><li><strong>Self-delivery via courier</strong> — Shipping fees to be borne by buyer.</li><li><strong>Walk-in to our office</strong> — Monday–Friday, 9:30 AM–4:00 PM (except public holidays).</li></ol>
                 <h3 className="font-bold text-black">For Self-Delivery (Warranty Claim)</h3>
                 <p>Kindly courier the malfunctioning item to our office for a quality check / warranty claim after contacting us.</p>
+                <h3 className="font-bold text-black">For Walk-In (Warranty Claim)</h3>
+                <p>Please bring the malfunctioning product and a screenshot of your Shopee invoice (if available). Kindly inform our operations team of the reason / issue of warranty upon arrival.</p>
                 <h3 className="font-bold text-black">Office Details</h3>
                 <p><strong>StreamCast Asia</strong><br/>No. 93-1, Block H, Jaya One,<br/>No. 72A, Jalan Universiti,<br/>Section 13, 46200 Petaling Jaya, Selangor</p>
                 <p><strong>Office Hotline:</strong> +603-7931 5927<br/><strong>Operation Hours:</strong> 9:30 AM–4:00 PM (Mon–Fri, except public holidays)</p>
